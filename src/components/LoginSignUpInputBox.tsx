@@ -5,6 +5,8 @@ interface LoginSignUpInputBoxProps {
   type: "text" | "password" | "email";
   placeholder: string;
   additionalStyles?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function LoginSignUpInputBox({
@@ -13,6 +15,8 @@ export default function LoginSignUpInputBox({
   id,
   type,
   placeholder,
+  value,
+  onChange,
   additionalStyles,
 }: LoginSignUpInputBoxProps) {
   return (
@@ -24,6 +28,8 @@ export default function LoginSignUpInputBox({
           id={id}
           autoComplete="off"
           type={type}
+          value={value}
+          onChange={onChange}
           placeholder={placeholder}
           className="w-full bg-transparent outline-none"
         />

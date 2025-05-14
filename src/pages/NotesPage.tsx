@@ -1,8 +1,9 @@
 import { Notebook, Search } from "lucide-react";
 import PagesContainer from "../components/PagesContainer";
 import NoteCard from "../components/NoteCard";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AutoFocusTextArea from "../components/AutoFocusTextArea";
+import { getNotes } from "../network/note_api";
 
 export default function NotesPage() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
@@ -15,6 +16,15 @@ export default function NotesPage() {
     ref.current.style.height = "auto";
     ref.current.style.height = ref.current.scrollHeight + "px";
   };
+
+  useEffect(() => {
+    async function loadNote() {
+      const note = await getNotes();
+      console.log(note);
+    }
+
+    loadNote();
+  }, []);
 
   return (
     <>
