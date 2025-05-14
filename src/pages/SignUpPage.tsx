@@ -1,10 +1,9 @@
 import { useState } from "react";
 import LoginSignUpInputBox from "../components/LoginSignUpInputBox";
-import { signUpFormSchema } from "../libs/validation";
-import { signUp } from "../network/user.api";
-import { ValidationError } from "../errors/ValidationError";
 import { ServerError, SignUpError } from "../errors/HttpError";
-import { useToast } from "../components/toast";
+import { ValidationError } from "../errors/ValidationError";
+import { signUpFormSchema } from "../libs/validation";
+import { signUp } from "../network/user_api";
 
 export interface newUserDataBody {
   email: string;
@@ -13,14 +12,12 @@ export interface newUserDataBody {
   confirmPassword: string;
 }
 
-interface formError {
+export interface formError {
   errorTitle: string;
   errorDesc: string[];
 }
 
 export default function SignUpPage() {
-  const { showToast } = useToast();
-
   const newUserDataStateDefaultValue = {
     email: "",
     username: "",
@@ -83,7 +80,6 @@ export default function SignUpPage() {
         err instanceof SignUpError
       ) {
         setError({ errorTitle: err.name, errorDesc: err.desc });
-        showToast("HELLLLOOOOO");
         return;
       }
       setError({

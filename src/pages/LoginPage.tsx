@@ -1,28 +1,140 @@
+import { useState } from "react";
 import LoginSignUpInputBox from "../components/LoginSignUpInputBox";
+import { ValidationError } from "../errors/ValidationError";
+import { loginFormSchema } from "../libs/validation";
+import { login } from "../network/user_api";
+import { formError } from "./SignUpPage";
+import { LoginError, ServerError } from "../errors/HttpError";
+import { useNavigate } from "react-router";
+import { User } from "../App";
 
-export default function LoginPage() {
+export interface userDataBody {
+  username: string;
+  password: string;
+}
+
+interface LoginPageProps {
+  setLoggedInUser: (loggedInUser: User) => void;
+}
+
+export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
+  const userDataDefaultValue = {
+    username: "",
+    password: "",
+  };
+
+  const [userData, setUserData] = useState<userDataBody>(userDataDefaultValue);
+
+  const [error, setError] = useState<formError | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const validate = loginFormSchema.safeParse({
+        username: userData.username,
+        password: userData.password,
+      });
+
+      if (!validate.success) {
+        const errorDesc = validate.error.issues.map((issue) => issue.message);
+        throw new ValidationError(errorDesc);
+      }
+
+      const userLogin = await login({
+        username: userData.username,
+        password: userData.password,
+      });
+
+      if (userLogin.status == 500) {
+        throw new ServerError(
+          "Something went wrong on our server. Please try again later"
+        );
+      }
+
+      if (userLogin.status != 200) {
+        throw new LoginError(userLogin.message);
+      }
+
+      setError(null);
+      setUserData(userDataDefaultValue);
+      setLoggedInUser({
+        username: userLogin.data.username,
+        email: userLogin.data.email,
+      });
+      navigate("/");
+    } catch (err) {
+      if (
+        err instanceof ValidationError ||
+        err instanceof ServerError ||
+        err instanceof LoginError
+      ) {
+        setError({ errorTitle: err.name, errorDesc: err.desc });
+        return;
+      }
+      setError({
+        errorTitle: "Server Unavailable",
+        errorDesc: ["Server unavailable, please try again later"],
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
-      <LoginSignUpInputBox
-        title="Username"
-        name="username"
-        id="username"
-        type="text"
-        placeholder="Insert Your Account Username"
-        additionalStyles="mb-5"
-      />
+      <form onSubmit={handleSubmit}>
+        {error && (
+          <div className="bg-red-700 rounded p-2 mb-2 text-white">
+            <p className="font-semibold">{error.errorTitle}</p>
+            <ol className="list-disc text-md ml-4">
+              {error.errorDesc.map((desc, index) => (
+                <li key={index}>{desc}</li>
+              ))}
+            </ol>
+          </div>
+        )}
+        <LoginSignUpInputBox
+          title="Username"
+          name="username"
+          id="username"
+          type="text"
+          value={userData.username}
+          onChange={handleChange}
+          placeholder="Insert Your Account Username"
+          additionalStyles="mb-5"
+        />
 
-      <LoginSignUpInputBox
-        title="Password"
-        name="password"
-        id="password"
-        type="password"
-        placeholder="Insert Your Account Password"
-      />
-
-      <div className="w-full mt-10 flex justify-center bg-blue-700 text-white p-3 rounded-3xl font-semibold">
-        <button>Login</button>
-      </div>
+        <LoginSignUpInputBox
+          title="Password"
+          name="password"
+          id="password"
+          type="password"
+          value={userData.password}
+          onChange={handleChange}
+          placeholder="Insert Your Account Password"
+        />
+        <div
+          className={`w-full mt-10 flex justify-center ${
+            loading ? "bg-blue-300" : "bg-blue-700"
+          } text-white p-3 rounded-3xl font-semibold`}
+        >
+          <button type="submit" disabled={loading}>
+            Login
+          </button>
+        </div>
+      </form>
       <div className="flex justify-center mt-10">
         Need an account?
         <a

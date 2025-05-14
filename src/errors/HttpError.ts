@@ -9,4 +9,7 @@ class HttpError extends Error {
 
 export class ServerError extends HttpError {}
 
+export class NotFoundError extends HttpError {}
+
 export class SignUpError extends HttpError {}
+export class LoginError extends HttpError {}
