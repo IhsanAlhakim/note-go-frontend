@@ -1,11 +1,11 @@
-import { Notebook, Search } from "lucide-react";
+import { Notebook } from "lucide-react";
 import React, { useRef, useState } from "react";
 import AutoFocusTextArea from "../components/AutoFocusTextArea";
 import NoteCard from "../components/NoteCard";
 import PagesContainer from "../components/PagesContainer";
+import NotePageHeader from "../components/NotePageHeader";
 
 export default function NotesPage() {
-  const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [showCreateNote, setShowCreateNote] = useState(false);
   const [showEditNote, setShowEditNote] = useState(false);
   const createTitleRef = useRef<HTMLTextAreaElement>(null);
@@ -28,43 +28,7 @@ export default function NotesPage() {
   return (
     <>
       <PagesContainer additionalStyles="flex flex-col">
-        <header className="h-[60px] flex justify-center border-b-2">
-          <div className="flex h-full w-[90%]">
-            <div className="flex items-center w-[200px] pl-5 text-2xl">
-              <h1 className="font-semibold">NoteNest</h1>
-            </div>
-            <div className="flex items-center w-[700px]">
-              <div className="w-full h-[45px] border-2 p-1 rounded-lg flex items-center">
-                <Search className="mx-4" />
-                <input
-                  type="text"
-                  className="w-full h-full outline-none bg-transparent"
-                  placeholder="Search"
-                />
-              </div>
-            </div>
-            <div className="grow flex justify-end items-center pr-5 relative">
-              <button
-                onClick={() => setShowLogoutButton(!showLogoutButton)}
-                className="bg-blue-500 h-[45px] px-4 rounded-lg font-semibold text-white"
-              >
-                Username
-              </button>
-              {showLogoutButton && (
-                <div
-                  className={`absolute transition-all grid grid-row-2 bg-blue-500 -bottom-20 w-[150px] h-[80px] text-white rounded-lg`}
-                >
-                  <div className="border-b-2 flex justify-center items-center">
-                    <p>Delete Account</p>
-                  </div>
-                  <div className="flex justify-center items-center">
-                    <p>Logout</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </header>
+        <NotePageHeader />
         <div className="flex grow">
           <nav className="w-[275px] min-w-[275px] border-r-2">
             <ul>

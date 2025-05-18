@@ -64,10 +64,34 @@ export async function login(data: loginBody): Promise<{
   };
 }
 
-export async function auth(): Promise<boolean> {
-  const response = await fetch("http://localhost:9000/auth", {
-    method: "GET",
-    credentials: "include",
+export async function logout(): Promise<boolean> {
+  const response = await fetch("http://localhost:9000/logout", {
+    method: "POST",
+    credentials: "include", //Wajib untuk terima/kirim cookie
   });
   return response.ok;
+}
+
+export async function deleteUser(): Promise<boolean> {
+  const response = await fetch("http://localhost:9000/delete/user", {
+    method: "DELETE",
+    credentials: "include", //Wajib untuk terima/kirim cookie
+  });
+  return response.ok;
+}
+
+export async function getUser(): Promise<loginResponseData | null> {
+  const response = await fetch("http://localhost:9000/user", {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) return null;
+
+  const responseJson: loginResponseBody = await response.json();
+
+  return {
+    username: responseJson.data.username,
+    email: responseJson.data.email,
+  };
 }
