@@ -82,7 +82,7 @@ export async function deleteUser(): Promise<boolean> {
 
 export async function getUser(): Promise<loginResponseData | null> {
   const response = await fetch("http://localhost:9000/user", {
-    method: "DELETE",
+    method: "GET",
     credentials: "include",
   });
 
