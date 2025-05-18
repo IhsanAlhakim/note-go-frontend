@@ -3,8 +3,8 @@ import { useRef } from "react";
 interface NoteFormTextAreaProps {
   id: string;
   name: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder: string;
 }
 
