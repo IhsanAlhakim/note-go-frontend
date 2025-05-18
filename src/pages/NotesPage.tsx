@@ -1,9 +1,9 @@
-import { Notebook } from "lucide-react";
 import React, { useRef, useState } from "react";
 import AutoFocusTextArea from "../components/note_page/AutoFocusTextArea";
 import NoteCard from "../components/note_page/NoteCard";
-import PagesContainer from "../components/note_page/PagesContainer";
 import NotePageHeader from "../components/note_page/NotePageHeader";
+import NotePageNav from "../components/note_page/NotePageNav";
+import PagesContainer from "../components/note_page/PagesContainer";
 
 export default function NotesPage() {
   const [showCreateNote, setShowCreateNote] = useState(false);
@@ -30,17 +30,7 @@ export default function NotesPage() {
       <PagesContainer additionalStyles="flex flex-col">
         <NotePageHeader />
         <div className="flex grow">
-          <nav className="w-[275px] min-w-[275px] border-r-2">
-            <ul>
-              <li className="flex items-center h-[70px] p-4 border-b-2 hover:bg-blue-500 hover:text-white transition-all">
-                <Notebook className="mr-5" />
-                <h2 className="text-lg font-semibold">Notes</h2>
-                <div className="w-[40px] h-[25px] bg-blue-600 flex items-center justify-center rounded-lg ml-auto">
-                  <p className="text-sm font-semibold text-white">100</p>
-                </div>
-              </li>
-            </ul>
-          </nav>
+          <NotePageNav />
           <main className="grow flex flex-col max-h-[calc(100dvh-60px)] overflow-auto pb-8">
             <div className="mx-auto my-10">
               <div className="w-[600px] max-w-[600px] min-h-[50px] border-2 px-3 rounded-lg flex-co items-center">
