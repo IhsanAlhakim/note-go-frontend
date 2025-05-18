@@ -4,11 +4,10 @@ import NoteCard from "../components/note_page/NoteCard";
 import NotePageHeader from "../components/note_page/NotePageHeader";
 import NotePageNav from "../components/note_page/NotePageNav";
 import PagesContainer from "../components/note_page/PagesContainer";
+import CreateNoteForm from "../components/note_page/CreateNoteForm";
 
 export default function NotesPage() {
-  const [showCreateNote, setShowCreateNote] = useState(false);
   const [showEditNote, setShowEditNote] = useState(false);
-  const createTitleRef = useRef<HTMLTextAreaElement>(null);
   const createTextRef = useRef<HTMLTextAreaElement>(null);
   const autoResize = (ref: React.RefObject<HTMLTextAreaElement | null>) => {
     if (!ref.current) return;
@@ -33,42 +32,7 @@ export default function NotesPage() {
           <NotePageNav />
           <main className="grow flex flex-col max-h-[calc(100dvh-60px)] overflow-auto pb-8">
             <div className="mx-auto my-10">
-              <div className="w-[600px] max-w-[600px] min-h-[50px] border-2 px-3 rounded-lg flex-co items-center">
-                {showCreateNote ? (
-                  <>
-                    <textarea
-                      ref={createTitleRef}
-                      onInput={() => autoResize(createTitleRef)}
-                      autoComplete="off"
-                      className="w-full mt-3 min-h-[50px] outline-none bg-transparent font-semibold text-lg resize-none"
-                      placeholder="Title"
-                    />
-                    <textarea
-                      ref={createTextRef}
-                      onInput={() => autoResize(createTextRef)}
-                      autoComplete="off"
-                      className="w-full min-h-[50px] outline-none bg-transparent font-semibold text-lg resize-none"
-                      placeholder="Take a note..."
-                    />
-                    <div className="w-full h-[50px] flex px-1 items-center">
-                      <button
-                        onClick={() => setShowCreateNote(!showCreateNote)}
-                        className="ml-auto bg-blue-500 w-[80px] h-[30px] rounded-lg font-semibold text-white"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    className="w-full h-[50px] outline-none bg-transparent font-semibold text-lg"
-                    placeholder="Take a note..."
-                    onClick={() => setShowCreateNote(!showCreateNote)}
-                  />
-                )}
-              </div>
+              <CreateNoteForm />
             </div>
             <div className="grow flex flex-row flex-wrap gap-5 justify-center">
               <NoteCard
