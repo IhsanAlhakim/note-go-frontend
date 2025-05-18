@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { User } from "../App";
-import { NotePageContext } from "../contexts/NotePageContext";
+import { NotePageContext } from "../contexts/note_page_context";
 
 interface NotesPageLayoutProps {
   loggedInUser: User | null;

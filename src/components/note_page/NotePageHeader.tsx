@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { useUser } from "../contexts/NotePageContext";
-import { deleteUser, logout } from "../network/user_api";
+import { useUser } from "../../contexts/note_page_context";
+import { deleteUser, logout } from "../../network/user_api";
 import { useNavigate } from "react-router";
 
 export default function NotePageHeader() {

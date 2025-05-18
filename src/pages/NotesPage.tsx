@@ -1,9 +1,9 @@
 import { Notebook } from "lucide-react";
 import React, { useRef, useState } from "react";
-import AutoFocusTextArea from "../components/AutoFocusTextArea";
-import NoteCard from "../components/NoteCard";
-import PagesContainer from "../components/PagesContainer";
-import NotePageHeader from "../components/NotePageHeader";
+import AutoFocusTextArea from "../components/note_page/AutoFocusTextArea";
+import NoteCard from "../components/note_page/NoteCard";
+import PagesContainer from "../components/note_page/PagesContainer";
+import NotePageHeader from "../components/note_page/NotePageHeader";
 
 export default function NotesPage() {
   const [showCreateNote, setShowCreateNote] = useState(false);

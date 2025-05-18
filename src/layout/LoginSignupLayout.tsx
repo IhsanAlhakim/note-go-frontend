@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router";
-import PagesContainer from "../components/PagesContainer";
+import PagesContainer from "../components/note_page/PagesContainer";
 
 export default function LoginSignupLayout() {
   const location = useLocation();

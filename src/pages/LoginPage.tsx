@@ -1,10 +1,10 @@
 import { useState } from "react";
-import LoginSignUpInputBox from "../components/LoginSignUpInputBox";
+import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
 import { ValidationError } from "../errors/ValidationError";
 import { loginFormSchema } from "../libs/validation";
 import { login } from "../network/user_api";
 import { formError } from "./SignUpPage";
-import { LoginError, ServerError } from "../errors/HttpError";
+import { LoginError, ServerError } from "../errors/http_error";
 import { useNavigate } from "react-router";
 import { User } from "../App";
 

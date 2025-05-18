@@ -1,6 +1,6 @@
 import { useState } from "react";
-import LoginSignUpInputBox from "../components/LoginSignUpInputBox";
-import { ServerError, SignUpError } from "../errors/HttpError";
+import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
+import { ServerError, SignUpError } from "../errors/http_error";
 import { ValidationError } from "../errors/ValidationError";
 import { signUpFormSchema } from "../libs/validation";
 import { signUp } from "../network/user_api";
