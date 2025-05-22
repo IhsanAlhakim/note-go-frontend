@@ -1,18 +1,19 @@
+import { useEffect } from "react";
 import CreateNoteForm from "../components/note_page/CreateNoteForm";
 import NoteListContainer from "../components/note_page/NoteListContainer";
 import NotePageHeader from "../components/note_page/NotePageHeader";
 import NotePageNav from "../components/note_page/NotePageNav";
 import PagesContainer from "../components/note_page/PagesContainer";
+import { getNotes } from "../network/note_api";
 
 export default function NotesPage() {
-  // useEffect(() => {
-  //   async function loadNote() {
-  //     const note = await getNotes();
-  //     console.log(note);
-  //   }
-
-  //   loadNote();
-  // }, []);
+  useEffect(() => {
+    async function loadNote() {
+      const note = await getNotes();
+      console.log(note);
+    }
+    loadNote();
+  }, []);
 
   return (
     <>

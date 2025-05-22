@@ -1,13 +1,3 @@
-export async function getNotes() {
-  const response = await fetch(
-    "http://localhost:9000/notes?userId=680f440987ebc6d2ed945b1c",
-    {
-      method: "GET",
-    }
-  );
-  return response.json();
-}
-
 interface createNoteBody {
   title: string;
   text: string;
@@ -47,4 +37,13 @@ export async function createNote(data: createNoteBody): Promise<{
     message: responseJson.message,
     data: responseJson.data,
   };
+}
+
+export async function getNotes(): Promise<createNoteResponseData> {
+  const response = await fetch("http://localhost:9000/notes", {
+    method: "GET",
+    credentials: "include",
+  });
+  const responseJson: createNoteResponseBody = await response.json();
+  return responseJson.data;
 }
