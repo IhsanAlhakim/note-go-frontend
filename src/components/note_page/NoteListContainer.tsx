@@ -1,8 +1,13 @@
 import React, { useRef, useState } from "react";
-import NoteCard from "./NoteCard";
+import { createNoteResponseData } from "../../network/note_api";
 import AutoFocusTextArea from "./AutoFocusTextArea";
+import NoteCard from "./NoteCard";
 
-export default function NoteListContainer() {
+interface NoteListContainerProps {
+  notes: createNoteResponseData[] | null
+}
+
+export default function NoteListContainer({notes}:NoteListContainerProps) {
   const [showEditNote, setShowEditNote] = useState(false);
   const createTextRef = useRef<HTMLTextAreaElement>(null);
   const autoResize = (ref: React.RefObject<HTMLTextAreaElement | null>) => {
@@ -13,34 +18,17 @@ export default function NoteListContainer() {
   return (
     <>
       <div className="grow flex flex-row flex-wrap gap-5 justify-center">
+        {notes ? (notes.map(note => {
+          return (
         <NoteCard
+        note={note}
+        key={note.noteId}
           setShowEditNote={setShowEditNote}
           showEditNote={showEditNote}
         />
-        <NoteCard
-          setShowEditNote={setShowEditNote}
-          showEditNote={showEditNote}
-        />
-        <NoteCard
-          setShowEditNote={setShowEditNote}
-          showEditNote={showEditNote}
-        />
-        <NoteCard
-          setShowEditNote={setShowEditNote}
-          showEditNote={showEditNote}
-        />
-        <NoteCard
-          setShowEditNote={setShowEditNote}
-          showEditNote={showEditNote}
-        />
-        <NoteCard
-          setShowEditNote={setShowEditNote}
-          showEditNote={showEditNote}
-        />
-        <NoteCard
-          setShowEditNote={setShowEditNote}
-          showEditNote={showEditNote}
-        />
+          )
+        })):(<div>No Note</div>)}
+        
       </div>
       {showEditNote && (
         <>

@@ -1,16 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CreateNoteForm from "../components/note_page/CreateNoteForm";
 import NoteListContainer from "../components/note_page/NoteListContainer";
 import NotePageHeader from "../components/note_page/NotePageHeader";
 import NotePageNav from "../components/note_page/NotePageNav";
 import PagesContainer from "../components/note_page/PagesContainer";
-import { getNotes } from "../network/note_api";
+import { createNoteResponseData, getNotes } from "../network/note_api";
 
 export default function NotesPage() {
+  const [notes, setNotes] = useState<createNoteResponseData[] | null>(null)
   useEffect(() => {
     async function loadNote() {
-      const note = await getNotes();
-      console.log(note);
+      const notesData = await getNotes();
+      console.log(notes);
+      setNotes(notesData)
     }
     loadNote();
   }, []);
@@ -25,7 +27,7 @@ export default function NotesPage() {
             <div className="mx-auto my-10">
               <CreateNoteForm />
             </div>
-            <NoteListContainer />
+            <NoteListContainer notes={notes}/>
           </main>
         </div>
       </PagesContainer>

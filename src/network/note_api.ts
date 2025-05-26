@@ -3,7 +3,7 @@ interface createNoteBody {
   text: string;
 }
 
-interface createNoteResponseData {
+export interface createNoteResponseData {
   noteId: string;
   userId: string;
   title: string;
@@ -39,11 +39,16 @@ export async function createNote(data: createNoteBody): Promise<{
   };
 }
 
-export async function getNotes(): Promise<createNoteResponseData> {
+interface getNotesResponseBody {
+  message: string;
+  data: createNoteResponseData[];
+}
+
+export async function getNotes(): Promise<createNoteResponseData[]> {
   const response = await fetch("http://localhost:9000/notes", {
     method: "GET",
     credentials: "include",
   });
-  const responseJson: createNoteResponseBody = await response.json();
+  const responseJson: getNotesResponseBody = await response.json();
   return responseJson.data;
 }
