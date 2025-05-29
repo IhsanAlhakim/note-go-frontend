@@ -2,18 +2,16 @@ import { createNoteResponseData } from "../../network/note_api";
 
 interface NoteCardProps {
   note: createNoteResponseData
-  showEditNote: boolean;
-  setShowEditNote: (val: boolean) => void;
+  onClickNote: () => void  
 }
 
 export default function NoteCard({
   note,
-  showEditNote,
-  setShowEditNote,
+  onClickNote
 }: NoteCardProps) {
   return (
     <div
-      onClick={() => setShowEditNote(!showEditNote)}
+      onClick={onClickNote}
       className="w-[300px] h-[200px] overflow-auto rounded-2xl py-3 px-5 flex flex-col font-semibold border-2 border-black"
     >
       <div className="mb-4 text-xl">

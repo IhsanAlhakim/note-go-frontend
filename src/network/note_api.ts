@@ -39,6 +39,34 @@ export async function createNote(data: createNoteBody): Promise<{
   };
 }
 
+interface updateNoteBody {
+  noteId: string;
+  title: string;
+  text: string;
+}
+
+export async function updateNote(data: updateNoteBody): Promise<{
+  status: number;
+  message: string;
+  data: createNoteResponseData;
+}> {
+  const response = await fetch("http://localhost:9000/update/note", {
+    method: "PATCH",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  const responseJson: createNoteResponseBody = await response.json();
+  return {
+    status: response.status,
+    message: responseJson.message,
+    data: responseJson.data,
+  };
+}
+
 interface getNotesResponseBody {
   message: string;
   data: createNoteResponseData[];

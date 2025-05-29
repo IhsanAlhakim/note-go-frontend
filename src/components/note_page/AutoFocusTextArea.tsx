@@ -1,6 +1,18 @@
 import { useEffect, useRef } from "react";
 
-export default function AutoFocusTextArea() {
+interface AutoFocusTextAreaProps {
+  id: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+export default function AutoFocusTextArea({
+  id,
+  name,
+  value,
+  onChange,
+}: AutoFocusTextAreaProps) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const autoResize = (ref: React.RefObject<HTMLTextAreaElement | null>) => {
     if (!ref.current) return;
@@ -19,12 +31,15 @@ export default function AutoFocusTextArea() {
 
   return (
     <textarea
+      id={id}
+      name={name}
       ref={textAreaRef}
       onInput={() => autoResize(textAreaRef)}
+      onChange={onChange}
       autoComplete="off"
       className="w-full min-h-[50px] outline-none bg-transparent font-semibold text-lg resize-none"
       placeholder="Title"
-      value={"Ini Judul Note"}
+      value={value}
     />
   );
 }
