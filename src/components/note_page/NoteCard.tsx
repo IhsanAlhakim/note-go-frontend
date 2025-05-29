@@ -1,13 +1,17 @@
 import { createNoteResponseData } from "../../network/note_api";
 
 interface NoteCardProps {
-  note: createNoteResponseData
-  onClickNote: () => void  
+  note: createNoteResponseData;
+  onClickNote: () => void;
+  loading: boolean;
+  handleDelete: (noteId: string) => void;
 }
 
 export default function NoteCard({
   note,
-  onClickNote
+  onClickNote,
+  loading,
+  handleDelete,
 }: NoteCardProps) {
   return (
     <div
@@ -25,7 +29,18 @@ export default function NoteCard({
           <p>09.38PM</p>
         </div>
         <div className="ml-auto">
-          <p>07 January 2025</p>
+          <button
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              handleDelete(note.noteId);
+            }}
+            disabled={loading}
+            className={`ml-auto ${
+              loading ? "bg-blue-300" : "bg-blue-500"
+            } w-[80px] h-[30px] rounded-lg font-semibold text-white`}
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>

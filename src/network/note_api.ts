@@ -67,6 +67,18 @@ export async function updateNote(data: updateNoteBody): Promise<{
   };
 }
 
+export async function deleteNote(noteId: string) {
+  const response = await fetch(
+    `http://localhost:9000/delete/note?noteId=${noteId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    }
+  );
+
+  return response.ok;
+}
+
 interface getNotesResponseBody {
   message: string;
   data: createNoteResponseData[];
