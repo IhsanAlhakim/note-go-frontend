@@ -21,4 +21,7 @@ export class ConflictError extends HttpError {}
 export const notFoundErrorStatusCode = 404;
 export class NotFoundError extends HttpError {}
 
+export const UnauthorizedErrorStatusCode = 401;
+export class UnauthorizedError extends HttpError {}
+
 export class LoginError extends HttpError {}

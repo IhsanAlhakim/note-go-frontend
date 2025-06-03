@@ -1,3 +1,5 @@
+import { responseStatusOK } from "../errors/http_error";
+
 interface signUpData {
   email: string;
   username: string;
@@ -80,18 +82,32 @@ export async function deleteUser(): Promise<boolean> {
   return response.ok;
 }
 
-export async function getUser(): Promise<loginAPIResponseData | null> {
+type getUserAPIResponseData = loginAPIResponseData;
+type getUserAPIResponseBody = loginAPIResponseBody;
+
+export async function getUser(): Promise<{
+  data: getUserAPIResponseData | null;
+  status: number;
+}> {
   const response = await fetch("http://localhost:9000/user", {
     method: "GET",
     credentials: "include",
   });
 
-  if (!response.ok) return null;
+  if (!response.ok) {
+    return {
+      data: null,
+      status: response.status,
+    };
+  }
 
-  const responseJson: loginAPIResponseBody = await response.json();
+  const responseJson: getUserAPIResponseBody = await response.json();
 
   return {
-    username: responseJson.data.username,
-    email: responseJson.data.email,
+    data: {
+      username: responseJson.data.username,
+      email: responseJson.data.email,
+    },
+    status: responseStatusOK,
   };
 }
