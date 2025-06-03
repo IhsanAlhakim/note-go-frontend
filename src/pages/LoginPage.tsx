@@ -1,12 +1,18 @@
 import { useState } from "react";
-import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
-import { ValidationError } from "../errors/ValidationError";
-import { loginFormSchema } from "../libs/validation";
-import { login } from "../network/user_api";
-import { formError } from "./SignUpPage";
-import { LoginError, ServerError } from "../errors/http_error";
 import { useNavigate } from "react-router";
 import { User } from "../App";
+import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
+import {
+  NotFoundError,
+  notFoundErrorStatusCode,
+  responseStatusOK,
+  ServerError,
+} from "../errors/http_error";
+import { unknownError } from "../errors/unknown_error";
+import { ValidationError } from "../errors/validation_error";
+import { loginFormSchema } from "../libs/validation";
+import { login } from "../network/user_api";
+import { formError } from "../types/FormError";
 
 export interface userDataBody {
   username: string;
@@ -53,40 +59,38 @@ export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
         throw new ValidationError(errorDesc);
       }
 
-      const userLogin = await login({
+      const loginAPIResponse = await login({
         username: userData.username,
         password: userData.password,
       });
 
-      if (userLogin.status == 500) {
-        throw new ServerError(
-          "Something went wrong on our server. Please try again later"
-        );
+      if (loginAPIResponse.status == notFoundErrorStatusCode) {
+        throw new NotFoundError(loginAPIResponse.message);
       }
 
-      if (userLogin.status != 200) {
-        throw new LoginError(userLogin.message);
+      if (loginAPIResponse.status != responseStatusOK) {
+        throw new ServerError();
       }
 
       setError(null);
       setUserData(userDataDefaultValue);
       setLoggedInUser({
-        username: userLogin.data.username,
-        email: userLogin.data.email,
+        username: loginAPIResponse.data.username,
+        email: loginAPIResponse.data.email,
       });
       navigate("/");
     } catch (err) {
       if (
         err instanceof ValidationError ||
         err instanceof ServerError ||
-        err instanceof LoginError
+        err instanceof NotFoundError
       ) {
         setError({ errorTitle: err.name, errorDesc: err.desc });
         return;
       }
       setError({
-        errorTitle: "Server Unavailable",
-        errorDesc: ["Server unavailable, please try again later"],
+        errorTitle: unknownError.title,
+        errorDesc: unknownError.message,
       });
     } finally {
       setLoading(false);

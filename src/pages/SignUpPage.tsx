@@ -1,20 +1,21 @@
 import { useState } from "react";
 import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
-import { ServerError, SignUpError } from "../errors/http_error";
-import { ValidationError } from "../errors/ValidationError";
+import {
+  conflicErrorStatusCode,
+  ConflictError,
+  ServerError,
+} from "../errors/http_error";
+import { ValidationError } from "../errors/validation_error";
 import { signUpFormSchema } from "../libs/validation";
 import { signUp } from "../network/user_api";
+import { formError } from "../types/FormError";
+import { unknownError } from "../errors/unknown_error";
 
 export interface newUserDataBody {
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
-}
-
-export interface formError {
-  errorTitle: string;
-  errorDesc: string[];
 }
 
 export default function SignUpPage() {
@@ -28,6 +29,7 @@ export default function SignUpPage() {
   const [newUserData, setNewUserData] = useState<newUserDataBody>(
     newUserDataStateDefaultValue
   );
+
   const [error, setError] = useState<formError | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -56,35 +58,36 @@ export default function SignUpPage() {
         throw new ValidationError(errorDesc);
       }
 
-      const createUser = await signUp({
+      const createUserAPIResponse = await signUp({
         username: newUserData.username,
         password: newUserData.password,
         email: newUserData.email,
       });
 
-      if (createUser.status == 500) {
-        throw new ServerError(
-          "Something went wrong on our server. Please try again later"
-        );
+      if (createUserAPIResponse.status == conflicErrorStatusCode) {
+        throw new ConflictError(createUserAPIResponse.message);
       }
 
-      if (createUser.status != 201) {
-        throw new SignUpError(createUser.message);
+      const dataCreatedStatusCode = 201;
+
+      if (createUserAPIResponse.status != dataCreatedStatusCode) {
+        throw new ServerError();
       }
+
       setError(null);
       setNewUserData(newUserDataStateDefaultValue);
     } catch (err) {
       if (
         err instanceof ValidationError ||
         err instanceof ServerError ||
-        err instanceof SignUpError
+        err instanceof ConflictError
       ) {
         setError({ errorTitle: err.name, errorDesc: err.desc });
         return;
       }
       setError({
-        errorTitle: "Server Error",
-        errorDesc: ["Server unavailable, please try again later"],
+        errorTitle: unknownError.title,
+        errorDesc: unknownError.message,
       });
     } finally {
       setLoading(false);
