@@ -14,7 +14,7 @@ import { loginFormSchema } from "../libs/validation";
 import { login } from "../network/user_api";
 import { formError } from "../types/FormError";
 
-export interface userDataBody {
+interface userDataBody {
   username: string;
   password: string;
 }

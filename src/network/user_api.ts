@@ -1,19 +1,14 @@
-interface signUpBody {
+interface signUpData {
   email: string;
   username: string;
   password: string;
 }
 
-interface loginBody {
-  username: string;
-  password: string;
-}
-
-interface responseBody {
+interface signUpAPIResponseBody {
   message: string;
 }
 
-export async function signUp(data: signUpBody): Promise<{
+export async function signUp(data: signUpData): Promise<{
   status: number;
   message: string;
 }> {
@@ -25,27 +20,32 @@ export async function signUp(data: signUpBody): Promise<{
     },
   });
   const responseStatusCode = response.status;
-  const responseJson: responseBody = await response.json();
+  const responseJson: signUpAPIResponseBody = await response.json();
   return {
     status: responseStatusCode,
     message: responseJson.message,
   };
 }
 
-interface loginResponseData {
+interface loginData {
+  username: string;
+  password: string;
+}
+
+interface loginAPIResponseData {
   username: string;
   email: string;
 }
 
-interface loginResponseBody {
+interface loginAPIResponseBody {
   message: string;
-  data: loginResponseData;
+  data: loginAPIResponseData;
 }
 
-export async function login(data: loginBody): Promise<{
+export async function login(data: loginData): Promise<{
   status: number;
   message: string;
-  data: loginResponseData;
+  data: loginAPIResponseData;
 }> {
   const response = await fetch("http://localhost:9000/login", {
     method: "POST",
@@ -56,7 +56,7 @@ export async function login(data: loginBody): Promise<{
     credentials: "include", //Wajib untuk terima/kirim cookie
   });
   const responseStatusCode = response.status;
-  const responseJson: loginResponseBody = await response.json();
+  const responseJson: loginAPIResponseBody = await response.json();
   return {
     status: responseStatusCode,
     message: responseJson.message,
@@ -80,7 +80,7 @@ export async function deleteUser(): Promise<boolean> {
   return response.ok;
 }
 
-export async function getUser(): Promise<loginResponseData | null> {
+export async function getUser(): Promise<loginAPIResponseData | null> {
   const response = await fetch("http://localhost:9000/user", {
     method: "GET",
     credentials: "include",
@@ -88,7 +88,7 @@ export async function getUser(): Promise<loginResponseData | null> {
 
   if (!response.ok) return null;
 
-  const responseJson: loginResponseBody = await response.json();
+  const responseJson: loginAPIResponseBody = await response.json();
 
   return {
     username: responseJson.data.username,
