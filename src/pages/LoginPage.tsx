@@ -7,6 +7,8 @@ import {
   notFoundErrorStatusCode,
   responseStatusOK,
   ServerError,
+  UnauthorizedError,
+  UnauthorizedErrorStatusCode,
 } from "../errors/http_error";
 import { unknownError } from "../errors/unknown_error";
 import { ValidationError } from "../errors/validation_error";
@@ -68,6 +70,10 @@ export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
         throw new NotFoundError(loginAPIResponse.message);
       }
 
+      if (loginAPIResponse.status == UnauthorizedErrorStatusCode) {
+        throw new UnauthorizedError(loginAPIResponse.message);
+      }
+
       if (loginAPIResponse.status != responseStatusOK) {
         throw new ServerError();
       }
@@ -83,7 +89,8 @@ export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
       if (
         err instanceof ValidationError ||
         err instanceof ServerError ||
-        err instanceof NotFoundError
+        err instanceof NotFoundError ||
+        err instanceof UnauthorizedError
       ) {
         setError({ errorTitle: err.name, errorDesc: err.desc });
         return;
