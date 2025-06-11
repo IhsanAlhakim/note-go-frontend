@@ -1,8 +1,11 @@
 import { useState } from "react";
 import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
 import {
+  ClientError,
   conflicErrorStatusCode,
   ConflictError,
+  isClientError,
+  isServerError,
   ServerError,
 } from "../errors/http_error";
 import { ValidationError } from "../errors/validation_error";
@@ -68,9 +71,11 @@ export default function SignUpPage() {
         throw new ConflictError(createUserAPIResponse.message);
       }
 
-      const dataCreatedStatusCode = 201;
+      if (isClientError(createUserAPIResponse.status)) {
+        throw new ClientError();
+      }
 
-      if (createUserAPIResponse.status != dataCreatedStatusCode) {
+      if (isServerError(createUserAPIResponse.status)) {
         throw new ServerError();
       }
 
@@ -80,7 +85,8 @@ export default function SignUpPage() {
       if (
         err instanceof ValidationError ||
         err instanceof ServerError ||
-        err instanceof ConflictError
+        err instanceof ConflictError ||
+        err instanceof ClientError
       ) {
         setError({ errorTitle: err.name, errorDesc: err.desc });
         return;

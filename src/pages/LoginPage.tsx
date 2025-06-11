@@ -3,9 +3,11 @@ import { useNavigate } from "react-router";
 import { User } from "../App";
 import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
 import {
+  ClientError,
+  isClientError,
+  isServerError,
   NotFoundError,
   notFoundErrorStatusCode,
-  responseStatusOK,
   ServerError,
   UnauthorizedError,
   UnauthorizedErrorStatusCode,
@@ -74,7 +76,11 @@ export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
         throw new UnauthorizedError(loginAPIResponse.message);
       }
 
-      if (loginAPIResponse.status != responseStatusOK) {
+      if (isClientError(loginAPIResponse.status)) {
+        throw new ClientError();
+      }
+
+      if (isServerError(loginAPIResponse.status)) {
         throw new ServerError();
       }
 
@@ -90,7 +96,8 @@ export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
         err instanceof ValidationError ||
         err instanceof ServerError ||
         err instanceof NotFoundError ||
-        err instanceof UnauthorizedError
+        err instanceof UnauthorizedError ||
+        err instanceof ClientError
       ) {
         setError({ errorTitle: err.name, errorDesc: err.desc });
         return;
