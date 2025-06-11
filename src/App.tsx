@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router";
+import { responseStatusOK } from "./errors/http_error";
 import LoginSignupLayout from "./layout/LoginSignupLayout";
 import NotesPageLayout from "./layout/NotePageLayout";
+import { getUser } from "./network/user_api";
 import LoginPage from "./pages/LoginPage";
 import NotesPage from "./pages/NotesPage";
 import SignUpPage from "./pages/SignUpPage";
-import { getUser } from "./network/user_api";
-import {
-  NotFoundError,
-  notFoundErrorStatusCode,
-  responseStatusOK,
-  ServerError,
-} from "./errors/http_error";
-import { useToast } from "./components/Toast";
 
 export interface User {
   email: string;
@@ -22,28 +16,15 @@ export interface User {
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
   const navigate = useNavigate();
-  const { showToast } = useToast();
 
   useEffect(() => {
     async function fetchLoggedInUser() {
-      try {
-        const getUserAPIResponse = await getUser();
-        if (getUserAPIResponse.status == notFoundErrorStatusCode) {
-          throw new NotFoundError("User Not Found");
-        }
-
-        if (getUserAPIResponse.status !== responseStatusOK) {
-          throw new ServerError();
-        }
-        setLoggedInUser(getUserAPIResponse.data);
-      } catch (error) {
-        if (error instanceof ServerError) {
-          showToast(
-            "Something went wrong on our server. Please try again later"
-          );
-        }
+      const getUserAPIResponse = await getUser();
+      if (getUserAPIResponse.status !== responseStatusOK) {
         navigate("/login");
+        return;
       }
+      setLoggedInUser(getUserAPIResponse.data);
     }
 
     fetchLoggedInUser();
