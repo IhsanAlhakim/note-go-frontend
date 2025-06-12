@@ -5,6 +5,13 @@ import { Notes } from "../../types/notes";
 import { useToast } from "../Toast";
 import EditNoteFormModal from "./EditNoteForm";
 import NoteCard from "./NoteCard";
+import {
+  ClientError,
+  isClientError,
+  isServerError,
+  ServerError,
+} from "../../errors/http_error";
+import { unknownError } from "../../errors/unknown_error";
 
 export default function NoteListContainer() {
   const { notes, setNotes } = useNotes();
@@ -18,16 +25,27 @@ export default function NoteListContainer() {
   const handleDelete = async (noteId: string) => {
     setLoading(true);
     try {
-      const isNoteDeleted = await deleteNote(noteId);
-      if (isNoteDeleted) {
-        showToast("Note Deleted");
-        if (notes) {
-          const updatedNotes = notes?.filter((note) => note.noteId !== noteId);
-          setNotes(updatedNotes);
-        }
+      const deleteNoteAPIResponse = await deleteNote(noteId);
+      if (isClientError(deleteNoteAPIResponse.status)) {
+        throw new ClientError();
       }
-    } catch (error) {
-      console.log(error);
+
+      if (isServerError(deleteNoteAPIResponse.status)) {
+        throw new ServerError();
+      }
+
+      showToast("Note Deleted");
+
+      if (notes) {
+        const updatedNotes = notes?.filter((note) => note.noteId !== noteId);
+        setNotes(updatedNotes);
+      }
+    } catch (err) {
+      if (err instanceof ServerError || err instanceof ClientError) {
+        showToast(err.desc[0]);
+        return;
+      }
+      showToast(unknownError.message[0]);
     } finally {
       setLoading(false);
     }

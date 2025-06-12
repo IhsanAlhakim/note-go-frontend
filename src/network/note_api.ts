@@ -60,7 +60,7 @@ export async function updateNote(data: updateNoteData): Promise<{
   };
 }
 
-export async function deleteNote(noteId: string) {
+export async function deleteNote(noteId: string): Promise<{ status: number }> {
   const response = await fetch(
     `http://localhost:9000/delete/note?noteId=${noteId}`,
     {
@@ -69,7 +69,9 @@ export async function deleteNote(noteId: string) {
     }
   );
 
-  return response.ok;
+  return {
+    status: response.status,
+  };
 }
 
 interface getNotesAPIResponseBody {
