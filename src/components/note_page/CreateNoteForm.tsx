@@ -1,8 +1,15 @@
 import { useState } from "react";
-import NoteFormTextArea from "./NoteFormTextArea";
-import NoteFormTextInput from "./NoteFormTextInput";
+import {
+  ClientError,
+  isClientError,
+  isServerError,
+  ServerError,
+} from "../../errors/http_error";
+import { unknownError } from "../../errors/unknown_error";
 import { createNote } from "../../network/note_api";
 import { useToast } from "../Toast";
+import NoteFormTextArea from "./NoteFormTextArea";
+import NoteFormTextInput from "./NoteFormTextInput";
 
 interface newNoteDataBody {
   title: string;
@@ -42,45 +49,24 @@ export default function CreateNoteForm() {
         text: newNoteData.text,
       });
 
-      const statusSuccessCreated = 201;
-
-      if (createNoteAPIResponse.status != statusSuccessCreated) {
-        throw new Error("Note not created successfully");
+      if (isClientError(createNoteAPIResponse.status)) {
+        throw new ClientError();
       }
+
+      if (isServerError(createNoteAPIResponse.status)) {
+        throw new ServerError();
+      }
+
       showToast("Note Created");
       setNewNoteData(newNoteDataDefaultValue);
-
-      //   if (userLogin.status == 500) {
-      //     throw new ServerError(
-      //       "Something went wrong on our server. Please try again later"
-      //     );
-      //   }
-      //   if (userLogin.status != 200) {
-      //     throw new LoginError(userLogin.message);
-      //   }
-      //   setUserData(userDataDefaultValue);
-      //   setLoggedInUser({
-      //     username: userLogin.data.username,
-      //     email: userLogin.data.email,
-      //   });
-      //   navigate("/");
     } catch (err) {
-      console.log(err);
-      showToast("Note not created successfully");
-      //   if (
-      //     err instanceof ValidationError ||
-      //     err instanceof ServerError ||
-      //     err instanceof LoginError
-      //   ) {
-      //     setError({ errorTitle: err.name, errorDesc: err.desc });
-      //     return;
-      //   }
-      //   setError({
-      //     errorTitle: "Server Unavailable",
-      //     errorDesc: ["Server unavailable, please try again later"],
-      //   });
+      if (err instanceof ServerError || err instanceof ClientError) {
+        showToast(err.desc[0]);
+        return;
+      }
+      showToast(unknownError.message[0]);
     } finally {
-      setShowCreateNote(!showCreateNote);
+      setShowCreateNote(false);
       setLoading(false);
     }
   };
@@ -116,7 +102,7 @@ export default function CreateNoteForm() {
           </div>
         </form>
       ) : (
-        <NoteFormTextInput onClick={() => setShowCreateNote(!showCreateNote)} />
+        <NoteFormTextInput onClick={() => setShowCreateNote(true)} />
       )}
     </div>
   );
