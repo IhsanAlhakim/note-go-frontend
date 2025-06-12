@@ -4,10 +4,11 @@ import NoteListContainer from "../components/note_page/NoteListContainer";
 import NotePageHeader from "../components/note_page/NotePageHeader";
 import NotePageNav from "../components/note_page/NotePageNav";
 import PagesContainer from "../components/note_page/PagesContainer";
-import { createNoteResponseData, getNotes } from "../network/note_api";
+import { getNotes } from "../network/note_api";
+import { Notes } from "../types/notes";
 
 export default function NotesPage() {
-  const [notes, setNotes] = useState<createNoteResponseData[] | null>(null);
+  const [notes, setNotes] = useState<Notes[] | null>(null);
   useEffect(() => {
     async function loadNote() {
       const notesData = await getNotes();
