@@ -13,6 +13,8 @@ import { signUpFormSchema } from "../libs/login_signup_form_validation";
 import { signUp } from "../network/user_api";
 import { formError } from "../types/form_error";
 import { unknownError } from "../errors/unknown_error";
+import { useNavigate } from "react-router";
+import { useToast } from "../components/Toast";
 
 export interface newUserDataBody {
   email: string;
@@ -22,6 +24,10 @@ export interface newUserDataBody {
 }
 
 export default function SignUpPage() {
+
+  const navigate = useNavigate()
+  const {showToast} = useToast()
+
   const newUserDataStateDefaultValue = {
     email: "",
     username: "",
@@ -81,6 +87,9 @@ export default function SignUpPage() {
 
       setError(null);
       setNewUserData(newUserDataStateDefaultValue);
+      showToast("User Created")
+      navigate("/login")
+      
     } catch (err) {
       if (
         err instanceof ValidationError ||
