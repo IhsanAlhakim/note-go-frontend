@@ -1,26 +1,19 @@
-interface createNoteBody {
+import { Notes } from "../types/notes";
+
+interface createNoteData {
   title: string;
   text: string;
 }
 
-export interface createNoteResponseData {
-  noteId: string;
-  userId: string;
-  title: string;
-  text: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface createNoteResponseBody {
+interface createNoteAPIResponseBody {
   message: string;
-  data: createNoteResponseData;
+  data: Notes;
 }
 
-export async function createNote(data: createNoteBody): Promise<{
+export async function createNote(data: createNoteData): Promise<{
   status: number;
   message: string;
-  data: createNoteResponseData;
+  data: Notes;
 }> {
   const response = await fetch("http://localhost:9000/create/note", {
     method: "POST",
@@ -31,7 +24,7 @@ export async function createNote(data: createNoteBody): Promise<{
     credentials: "include",
   });
 
-  const responseJson: createNoteResponseBody = await response.json();
+  const responseJson: createNoteAPIResponseBody = await response.json();
   return {
     status: response.status,
     message: responseJson.message,
@@ -39,16 +32,16 @@ export async function createNote(data: createNoteBody): Promise<{
   };
 }
 
-interface updateNoteBody {
+interface updateNoteData {
   noteId: string;
   title: string;
   text: string;
 }
 
-export async function updateNote(data: updateNoteBody): Promise<{
+export async function updateNote(data: updateNoteData): Promise<{
   status: number;
   message: string;
-  data: createNoteResponseData;
+  data: Notes;
 }> {
   const response = await fetch("http://localhost:9000/update/note", {
     method: "PATCH",
@@ -59,7 +52,7 @@ export async function updateNote(data: updateNoteBody): Promise<{
     credentials: "include",
   });
 
-  const responseJson: createNoteResponseBody = await response.json();
+  const responseJson: createNoteAPIResponseBody = await response.json();
   return {
     status: response.status,
     message: responseJson.message,
@@ -79,16 +72,16 @@ export async function deleteNote(noteId: string) {
   return response.ok;
 }
 
-interface getNotesResponseBody {
+interface getNotesAPIResponseBody {
   message: string;
-  data: createNoteResponseData[];
+  data: Notes[];
 }
 
-export async function getNotes(): Promise<createNoteResponseData[]> {
+export async function getNotes(): Promise<Notes[]> {
   const response = await fetch("http://localhost:9000/notes", {
     method: "GET",
     credentials: "include",
   });
-  const responseJson: getNotesResponseBody = await response.json();
+  const responseJson: getNotesAPIResponseBody = await response.json();
   return responseJson.data;
 }
