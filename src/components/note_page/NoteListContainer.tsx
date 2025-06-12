@@ -1,19 +1,14 @@
 import { useState } from "react";
+import { useNotes } from "../../contexts/notes_context";
 import { deleteNote } from "../../network/note_api";
 import { Notes } from "../../types/notes";
 import { useToast } from "../Toast";
 import EditNoteFormModal from "./EditNoteForm";
 import NoteCard from "./NoteCard";
 
-interface NoteListContainerProps {
-  notes: Notes[] | null;
-  setNotes: (notes: Notes[]) => void;
-}
+export default function NoteListContainer() {
+  const { notes, setNotes } = useNotes();
 
-export default function NoteListContainer({
-  notes,
-  setNotes,
-}: NoteListContainerProps) {
   const [showEditNote, setShowEditNote] = useState(false);
 
   const { showToast } = useToast();

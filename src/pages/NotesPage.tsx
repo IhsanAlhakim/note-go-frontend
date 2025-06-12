@@ -6,6 +6,7 @@ import NotePageNav from "../components/note_page/NotePageNav";
 import PagesContainer from "../components/note_page/PagesContainer";
 import { getNotes } from "../network/note_api";
 import { Notes } from "../types/notes";
+import { NotesContext } from "../contexts/notes_context";
 
 export default function NotesPage() {
   const [notes, setNotes] = useState<Notes[] | null>(null);
@@ -18,19 +19,19 @@ export default function NotesPage() {
   }, []);
 
   return (
-    <>
+    <NotesContext.Provider value={{ notes, setNotes }}>
       <PagesContainer additionalStyles="flex flex-col">
         <NotePageHeader />
         <div className="flex grow">
           <NotePageNav />
           <main className="grow flex flex-col max-h-[calc(100dvh-60px)] overflow-auto pb-8">
             <div className="mx-auto my-10">
-              <CreateNoteForm notes={notes} setNotes={setNotes} />
+              <CreateNoteForm />
             </div>
-            <NoteListContainer notes={notes} setNotes={setNotes} />
+            <NoteListContainer />
           </main>
         </div>
       </PagesContainer>
-    </>
+    </NotesContext.Provider>
   );
 }

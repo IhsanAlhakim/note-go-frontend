@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNotes } from "../../contexts/notes_context";
 import {
   ClientError,
   isClientError,
@@ -10,22 +11,15 @@ import { createNote } from "../../network/note_api";
 import { useToast } from "../Toast";
 import NoteFormTextArea from "./NoteFormTextArea";
 import NoteFormTextInput from "./NoteFormTextInput";
-import { Notes } from "../../types/notes";
-
-interface CreateNoteFormProps {
-  notes: Notes[] | null;
-  setNotes: (notes: Notes[]) => void;
-}
 
 interface newNoteDataBody {
   title: string;
   text: string;
 }
 
-export default function CreateNoteForm({
-  notes,
-  setNotes,
-}: CreateNoteFormProps) {
+export default function CreateNoteForm() {
+  const { notes, setNotes } = useNotes();
+
   const newNoteDataDefaultValue = {
     title: "",
     text: "",

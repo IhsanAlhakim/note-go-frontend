@@ -11,6 +11,6 @@ export const UserContext = createContext<UserContext | undefined>(undefined);
 export function useUser() {
   const context = useContext(UserContext);
   if (!context)
-    throw new Error("useUser must be used within an NotePageProvider");
+    throw new Error("useUser must be used within an UserContextProvider");
   return context;
 }
