@@ -1,7 +1,7 @@
-import { createNoteResponseData } from "../../network/note_api";
+import { Notes } from "../../types/notes";
 
 interface NoteCardProps {
-  note: createNoteResponseData;
+  note: Notes;
   onClickNote: () => void;
   loading: boolean;
   handleDelete: (noteId: string) => void;
@@ -39,7 +39,7 @@ export default function NoteCard({
               loading ? "bg-blue-300" : "bg-blue-500"
             } w-[80px] h-[30px] rounded-lg font-semibold text-white`}
           >
-            Close
+            Delete
           </button>
         </div>
       </div>

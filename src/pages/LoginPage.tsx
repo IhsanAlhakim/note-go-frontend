@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { User } from "../App";
 import LoginSignUpInputBox from "../components/login_page/LoginSignUpInputBox";
+import { useUser } from "../contexts/user_context";
 import {
   ClientError,
   isClientError,
@@ -22,12 +22,9 @@ interface userDataBody {
   username: string;
   password: string;
 }
+export default function LoginPage() {
+  const { setLoggedInUser } = useUser();
 
-interface LoginPageProps {
-  setLoggedInUser: (loggedInUser: User) => void;
-}
-
-export default function LoginPage({ setLoggedInUser }: LoginPageProps) {
   const userDataDefaultValue = {
     username: "",
     password: "",

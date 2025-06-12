@@ -7,6 +7,7 @@ import { getUser } from "./network/user_api";
 import LoginPage from "./pages/LoginPage";
 import NotesPage from "./pages/NotesPage";
 import SignUpPage from "./pages/SignUpPage";
+import { UserContext } from "./contexts/user_context";
 
 export interface User {
   email: string;
@@ -32,18 +33,17 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route element={<NotesPageLayout loggedInUser={loggedInUser} />}>
-        <Route path="/" element={<NotesPage />} />
-      </Route>
-      <Route element={<LoginSignupLayout />}>
-        <Route
-          path="/login"
-          element={<LoginPage setLoggedInUser={setLoggedInUser} />}
-        />
-        <Route path="/signup" element={<SignUpPage />} />
-      </Route>
-    </Routes>
+    <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
+      <Routes>
+        <Route element={<NotesPageLayout />}>
+          <Route path="/" element={<NotesPage />} />
+        </Route>
+        <Route element={<LoginSignupLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+        </Route>
+      </Routes>
+    </UserContext.Provider>
   );
 }
 

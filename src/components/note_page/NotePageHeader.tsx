@@ -1,13 +1,13 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { useUser } from "../../contexts/note_page_context";
+import { useUser } from "../../contexts/user_context";
 import { deleteUser, logout } from "../../network/user_api";
 import { useNavigate } from "react-router";
 
 export default function NotePageHeader() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [loading, setLoading] = useState(false);
-  const user = useUser();
+  const { loggedInUser } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -69,7 +69,7 @@ export default function NotePageHeader() {
             onClick={() => setShowLogoutButton(!showLogoutButton)}
             className="bg-blue-500 h-[45px] px-4 rounded-lg font-semibold text-white"
           >
-            {user.username}
+            {loggedInUser?.username}
           </button>
           {showLogoutButton && (
             <div
