@@ -66,12 +66,14 @@ export async function login(data: loginData): Promise<{
   };
 }
 
-export async function logout(): Promise<boolean> {
+export async function logout(): Promise<{ status: number }> {
   const response = await fetch("http://localhost:9000/logout", {
     method: "POST",
     credentials: "include", //Wajib untuk terima/kirim cookie
   });
-  return response.ok;
+  return {
+    status: response.status,
+  };
 }
 
 export async function deleteUser(): Promise<boolean> {

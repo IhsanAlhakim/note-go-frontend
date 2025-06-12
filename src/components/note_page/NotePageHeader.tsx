@@ -3,23 +3,40 @@ import { useState } from "react";
 import { useUser } from "../../contexts/user_context";
 import { deleteUser, logout } from "../../network/user_api";
 import { useNavigate } from "react-router";
+import {
+  ClientError,
+  isClientError,
+  isServerError,
+  ServerError,
+} from "../../errors/http_error";
+import { useToast } from "../Toast";
+import { unknownError } from "../../errors/unknown_error";
 
 export default function NotePageHeader() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [loading, setLoading] = useState(false);
   const { loggedInUser } = useUser();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const isUserLogout = await logout();
-      if (!isUserLogout) {
-        throw new Error("Server Error");
+      const logoutAPIResponse = await logout();
+      if (isClientError(logoutAPIResponse.status)) {
+        throw new ClientError();
+      }
+
+      if (isServerError(logoutAPIResponse.status)) {
+        throw new ServerError();
       }
       navigate("/login");
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof ServerError || err instanceof ClientError) {
+        showToast(err.desc[0]);
+        return;
+      }
+      showToast(unknownError.message[0]);
     } finally {
       setLoading(false);
     }
