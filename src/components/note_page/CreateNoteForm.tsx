@@ -34,8 +34,9 @@ export default function CreateNoteForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
     try {
+      if (newNoteData.title === "" && newNoteData.text === "") return;
+      setLoading(true);
       const createNoteAPIResponse = await createNote({
         title: newNoteData.title,
         text: newNoteData.text,
