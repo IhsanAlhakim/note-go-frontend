@@ -1,13 +1,21 @@
 import { useState } from "react";
 import NoteFormTextArea from "./NoteFormTextArea";
-import { createNoteResponseData, updateNote } from "../../network/note_api";
+import { updateNote } from "../../network/note_api";
 import AutoFocusTextArea from "./AutoFocusTextArea";
 import { useToast } from "../Toast";
+import { Notes } from "../../types/notes";
+import {
+  ClientError,
+  isClientError,
+  isServerError,
+  ServerError,
+} from "../../errors/http_error";
+import { unknownError } from "../../errors/unknown_error";
 
 interface EditNoteFormModalProps {
-  noteToEdit: createNoteResponseData;
-  setNoteToEdit: (noteToEdit: createNoteResponseData) => void;
-  onSuccessEdit: (note: createNoteResponseData) => void;
+  noteToEdit: Notes;
+  setNoteToEdit: (noteToEdit: Notes) => void;
+  onSuccessEdit: (note: Notes) => void;
   onCloseEditForm: () => void;
 }
 
@@ -40,44 +48,23 @@ export default function EditNoteFormModal({
         text: noteToEdit.text,
       });
 
-      const statusSuccess = 200;
-
-      if (updateNoteAPIResponse.status != statusSuccess) {
-        throw new Error("Note not updated successfully");
+      if (isClientError(updateNoteAPIResponse.status)) {
+        throw new ClientError();
       }
-      showToast("Note Updated");
-      onSuccessEdit(noteToEdit);
-      // setNewNoteData(newNoteDataDefaultValue);
 
-      //   if (userLogin.status == 500) {
-      //     throw new ServerError(
-      //       "Something went wrong on our server. Please try again later"
-      //     );
-      //   }
-      //   if (userLogin.status != 200) {
-      //     throw new LoginError(userLogin.message);
-      //   }
-      //   setUserData(userDataDefaultValue);
-      //   setLoggedInUser({
-      //     username: userLogin.data.username,
-      //     email: userLogin.data.email,
-      //   });
-      //   navigate("/");
+      if (isServerError(updateNoteAPIResponse.status)) {
+        throw new ServerError();
+      }
+
+      showToast("Note Updated");
+
+      onSuccessEdit(noteToEdit);
     } catch (err) {
-      console.log(err);
-      showToast("Note not created successfully");
-      //   if (
-      //     err instanceof ValidationError ||
-      //     err instanceof ServerError ||
-      //     err instanceof LoginError
-      //   ) {
-      //     setError({ errorTitle: err.name, errorDesc: err.desc });
-      //     return;
-      //   }
-      //   setError({
-      //     errorTitle: "Server Unavailable",
-      //     errorDesc: ["Server unavailable, please try again later"],
-      //   });
+      if (err instanceof ServerError || err instanceof ClientError) {
+        showToast(err.desc[0]);
+        return;
+      }
+      showToast(unknownError.message[0]);
     } finally {
       setLoading(false);
       onCloseEditForm();
