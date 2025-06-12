@@ -16,7 +16,7 @@ import { unknownError } from "../errors/unknown_error";
 import { ValidationError } from "../errors/validation_error";
 import { loginFormSchema } from "../libs/validation";
 import { login } from "../network/user_api";
-import { formError } from "../types/FormError";
+import { formError } from "../types/form_error";
 
 interface userDataBody {
   username: string;

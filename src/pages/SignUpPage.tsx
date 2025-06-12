@@ -11,7 +11,7 @@ import {
 import { ValidationError } from "../errors/validation_error";
 import { signUpFormSchema } from "../libs/validation";
 import { signUp } from "../network/user_api";
-import { formError } from "../types/FormError";
+import { formError } from "../types/form_error";
 import { unknownError } from "../errors/unknown_error";
 
 export interface newUserDataBody {
