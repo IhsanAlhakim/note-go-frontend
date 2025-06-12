@@ -14,7 +14,7 @@ import {
 } from "../errors/http_error";
 import { unknownError } from "../errors/unknown_error";
 import { ValidationError } from "../errors/validation_error";
-import { loginFormSchema } from "../libs/validation";
+import { loginFormSchema } from "../libs/login_signup_form_validation";
 import { login } from "../network/user_api";
 import { formError } from "../types/form_error";
 
