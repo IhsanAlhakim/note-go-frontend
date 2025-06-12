@@ -25,7 +25,7 @@ export default function NotesPage() {
           <NotePageNav />
           <main className="grow flex flex-col max-h-[calc(100dvh-60px)] overflow-auto pb-8">
             <div className="mx-auto my-10">
-              <CreateNoteForm />
+              <CreateNoteForm notes={notes} setNotes={setNotes} />
             </div>
             <NoteListContainer notes={notes} setNotes={setNotes} />
           </main>

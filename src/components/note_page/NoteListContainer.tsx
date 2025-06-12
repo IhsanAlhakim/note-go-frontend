@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { createNoteResponseData, deleteNote } from "../../network/note_api";
+import { deleteNote } from "../../network/note_api";
+import { Notes } from "../../types/notes";
+import { useToast } from "../Toast";
 import EditNoteFormModal from "./EditNoteForm";
 import NoteCard from "./NoteCard";
-import { useToast } from "../Toast";
 
 interface NoteListContainerProps {
-  notes: createNoteResponseData[] | null;
-  setNotes: (notes: createNoteResponseData[]) => void;
+  notes: Notes[] | null;
+  setNotes: (notes: Notes[]) => void;
 }
 
 export default function NoteListContainer({
@@ -46,11 +47,9 @@ export default function NoteListContainer({
     updatedAt: "",
   };
 
-  const [noteToEdit, setNoteToEdit] = useState<createNoteResponseData>(
-    noteToEditDefaultValue
-  );
+  const [noteToEdit, setNoteToEdit] = useState<Notes>(noteToEditDefaultValue);
 
-  const updateNoteList = (updatedNote: createNoteResponseData) => {
+  const updateNoteList = (updatedNote: Notes) => {
     if (notes !== null) {
       const idx = notes?.findIndex(
         (note) => note.noteId === updatedNote.noteId

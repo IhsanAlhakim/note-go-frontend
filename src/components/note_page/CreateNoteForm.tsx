@@ -10,13 +10,22 @@ import { createNote } from "../../network/note_api";
 import { useToast } from "../Toast";
 import NoteFormTextArea from "./NoteFormTextArea";
 import NoteFormTextInput from "./NoteFormTextInput";
+import { Notes } from "../../types/notes";
+
+interface CreateNoteFormProps {
+  notes: Notes[] | null;
+  setNotes: (notes: Notes[]) => void;
+}
 
 interface newNoteDataBody {
   title: string;
   text: string;
 }
 
-export default function CreateNoteForm() {
+export default function CreateNoteForm({
+  notes,
+  setNotes,
+}: CreateNoteFormProps) {
   const newNoteDataDefaultValue = {
     title: "",
     text: "",
@@ -59,6 +68,11 @@ export default function CreateNoteForm() {
 
       showToast("Note Created");
       setNewNoteData(newNoteDataDefaultValue);
+      if (!notes) {
+        setNotes([createNoteAPIResponse.data]);
+        return;
+      }
+      setNotes([createNoteAPIResponse.data, ...notes]);
     } catch (err) {
       if (err instanceof ServerError || err instanceof ClientError) {
         showToast(err.desc[0]);
