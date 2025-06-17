@@ -11,9 +11,11 @@ import { unknownError } from "../../errors/unknown_error";
 import { deleteUser, logout } from "../../network/user_api";
 import { useToast } from "../Toast";
 import SearchNoteInput from "./SearchNoteInput";
+import { useConfirm } from "../ConfirmModal";
 
 export default function NotePageHeader() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
+  const { showConfirm } = useConfirm();
   const [loading, setLoading] = useState(false);
   const { loggedInUser } = useUser();
   const navigate = useNavigate();
@@ -90,7 +92,12 @@ export default function NotePageHeader() {
                   loading && "bg-blue-300"
                 } hover:bg-blue-300`}
               >
-                <button disabled={loading} onClick={handleDeleteUser}>
+                <button
+                  disabled={loading}
+                  onClick={() =>
+                    showConfirm("Yakin Logout", () => handleDeleteUser())
+                  }
+                >
                   Delete Account
                 </button>
               </div>
@@ -99,7 +106,12 @@ export default function NotePageHeader() {
                   loading && "bg-blue-300"
                 } hover:bg-blue-300`}
               >
-                <button disabled={loading} onClick={handleLogout}>
+                <button
+                  disabled={loading}
+                  onClick={() =>
+                    showConfirm("Yakin Logout", () => handleLogout())
+                  }
+                >
                   Logout
                 </button>
               </div>
