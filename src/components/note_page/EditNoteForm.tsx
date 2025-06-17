@@ -56,8 +56,6 @@ export default function EditNoteFormModal({
         throw new ServerError();
       }
 
-      showToast("Note Updated");
-
       onSuccessEdit(noteToEdit);
     } catch (err) {
       if (err instanceof ServerError || err instanceof ClientError) {
