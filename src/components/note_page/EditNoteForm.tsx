@@ -3,7 +3,7 @@ import NoteFormTextArea from "./NoteFormTextArea";
 import { updateNote } from "../../network/note_api";
 import AutoFocusTextArea from "./AutoFocusTextArea";
 import { useToast } from "../Toast";
-import { Notes } from "../../types/notes";
+import { Note } from "../../types/notes";
 import {
   ClientError,
   isClientError,
@@ -13,9 +13,9 @@ import {
 import { unknownError } from "../../errors/unknown_error";
 
 interface EditNoteFormModalProps {
-  noteToEdit: Notes;
-  setNoteToEdit: (noteToEdit: Notes) => void;
-  onSuccessEdit: (note: Notes) => void;
+  noteToEdit: Note;
+  setNoteToEdit: (noteToEdit: Note) => void;
+  onSuccessEdit: (note: Note) => void;
   onCloseEditForm: () => void;
 }
 
