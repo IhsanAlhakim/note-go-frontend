@@ -1,4 +1,5 @@
 import { Note } from "../../types/notes";
+import { getDate } from "../../utils/get_date_time";
 import { useConfirm } from "../ConfirmModal";
 
 interface NoteCardProps {
@@ -28,7 +29,7 @@ export default function NoteCard({
       </div>
       <div className="mt-auto flex text-sm">
         <div>
-          <p>09.38PM</p>
+          <p>{getDate(note.createdAt)}</p>
         </div>
         <div className="ml-auto">
           <button

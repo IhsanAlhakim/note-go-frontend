@@ -11,6 +11,7 @@ import {
   ServerError,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
+import { getDate, getTime } from "../../utils/get_date_time";
 
 interface EditNoteFormModalProps {
   noteToEdit: Note;
@@ -25,6 +26,7 @@ export default function EditNoteFormModal({
   onCloseEditForm,
   onSuccessEdit,
 }: EditNoteFormModalProps) {
+  console.log(noteToEdit);
   const [loading, setLoading] = useState(false);
 
   const { showToast } = useToast();
@@ -88,7 +90,12 @@ export default function EditNoteFormModal({
               placeholder="Take a note"
             />
             <div className="flex font-semibold text-sm">
-              <p className="ml-auto">Edited Nov 19, 2024</p>
+              <p className="ml-auto">
+                Edited{" "}
+                {`${getTime(noteToEdit.updatedAt)}, ${getDate(
+                  noteToEdit.updatedAt
+                )}`}
+              </p>
             </div>
             <div className="w-full h-[50px] flex px-1 items-center">
               <button

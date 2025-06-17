@@ -70,7 +70,6 @@ export default function NoteListContainer() {
       const idx = notes?.findIndex(
         (note) => note.noteId === updatedNote.noteId
       );
-      console.log(idx);
       if (idx !== -1) {
         const updatedNotes = [...notes];
         updatedNotes[idx] = updatedNote;
