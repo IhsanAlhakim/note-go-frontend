@@ -76,12 +76,14 @@ export async function logout(): Promise<{ status: number }> {
   };
 }
 
-export async function deleteUser(): Promise<boolean> {
+export async function deleteUser(): Promise<{ status: number }> {
   const response = await fetch("http://localhost:9000/delete/user", {
     method: "DELETE",
     credentials: "include", //Wajib untuk terima/kirim cookie
   });
-  return response.ok;
+  return {
+    status: response.status,
+  };
 }
 
 type getUserAPIResponseData = loginAPIResponseData;

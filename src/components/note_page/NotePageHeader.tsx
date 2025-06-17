@@ -47,21 +47,21 @@ export default function NotePageHeader() {
   const handleDeleteUser = async () => {
     setLoading(true);
     try {
-      const confirmDelete = confirm(
-        "Are You Sure Want To Delete Your Account?"
-      );
-
-      if (!confirmDelete) {
-        return;
+      const deleteUserAPIResponse = await deleteUser();
+      if (isClientError(deleteUserAPIResponse.status)) {
+        throw new ClientError();
       }
 
-      const isUserDeleted = await deleteUser();
-      if (!isUserDeleted) {
-        throw new Error("Server Error");
+      if (isServerError(deleteUserAPIResponse.status)) {
+        throw new ServerError();
       }
       navigate("/login");
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof ServerError || err instanceof ClientError) {
+        showToast(err.desc[0]);
+        return;
+      }
+      showToast(unknownError.message[0]);
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ export default function NotePageHeader() {
                 <button
                   disabled={loading}
                   onClick={() =>
-                    showConfirm("Yakin Logout", () => handleDeleteUser())
+                    showConfirm("Yakin Hapus User", () => handleDeleteUser())
                   }
                 >
                   Delete Account
