@@ -12,9 +12,11 @@ import {
   ServerError,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
+import { useSearchNotes } from "../../contexts/filter_notes_context";
 
 export default function NoteListContainer() {
   const { notes, setNotes } = useNotes();
+  const { keyword } = useSearchNotes();
 
   const [showEditNote, setShowEditNote] = useState(false);
 
@@ -79,24 +81,41 @@ export default function NoteListContainer() {
   return (
     <>
       <div className="grow flex flex-row flex-wrap gap-5 justify-center">
-        {notes ? (
-          notes.map((note) => {
-            return (
-              <NoteCard
-                note={note}
-                key={note.noteId}
-                onClickNote={() => {
-                  setShowEditNote(true);
-                  setNoteToEdit(note);
-                }}
-                loading={loading}
-                handleDelete={handleDelete}
-              />
-            );
-          })
-        ) : (
-          <div>No Note</div>
-        )}
+        {keyword && keyword !== ""
+          ? notes
+              ?.filter(
+                (note) =>
+                  note.text.toLowerCase().includes(keyword.toLowerCase()) ||
+                  note.title.toLowerCase().includes(keyword.toLowerCase())
+              )
+              .map((note) => {
+                return (
+                  <NoteCard
+                    note={note}
+                    key={note.noteId}
+                    onClickNote={() => {
+                      setShowEditNote(true);
+                      setNoteToEdit(note);
+                    }}
+                    loading={loading}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })
+          : notes?.map((note) => {
+              return (
+                <NoteCard
+                  note={note}
+                  key={note.noteId}
+                  onClickNote={() => {
+                    setShowEditNote(true);
+                    setNoteToEdit(note);
+                  }}
+                  loading={loading}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
       </div>
       {showEditNote && (
         <EditNoteFormModal
