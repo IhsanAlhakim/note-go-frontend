@@ -1,7 +1,8 @@
-import { Notes } from "../../types/notes";
+import { Note } from "../../types/notes";
+import { useConfirm } from "../ConfirmModal";
 
 interface NoteCardProps {
-  note: Notes;
+  note: Note;
   onClickNote: () => void;
   loading: boolean;
   handleDelete: (noteId: string) => void;
@@ -13,6 +14,7 @@ export default function NoteCard({
   loading,
   handleDelete,
 }: NoteCardProps) {
+  const { showConfirm } = useConfirm();
   return (
     <div
       onClick={onClickNote}
@@ -32,7 +34,7 @@ export default function NoteCard({
           <button
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
-              handleDelete(note.noteId);
+              showConfirm("Yakin Hapus?", () => handleDelete(note.noteId));
             }}
             disabled={loading}
             className={`ml-auto ${
