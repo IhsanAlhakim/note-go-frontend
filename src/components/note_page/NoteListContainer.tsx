@@ -81,8 +81,8 @@ export default function NoteListContainer() {
   };
   return (
     <>
-      {notes && (
-        <>
+      {notes && notes.length > 0 && (
+        <div className="grow flex flex-row flex-wrap gap-5 justify-center">
           {keyword && keyword !== ""
             ? notes
                 .filter(
@@ -92,23 +92,6 @@ export default function NoteListContainer() {
                 )
                 .map((note) => {
                   return (
-                    <div className="grow flex flex-row flex-wrap gap-5 justify-center">
-                      <NoteCard
-                        note={note}
-                        key={note.noteId}
-                        onClickNote={() => {
-                          setShowEditNote(true);
-                          setNoteToEdit(note);
-                        }}
-                        loading={loading}
-                        handleDelete={handleDelete}
-                      />
-                    </div>
-                  );
-                })
-            : notes.map((note) => {
-                return (
-                  <div className="grow flex flex-row flex-wrap gap-5 justify-center">
                     <NoteCard
                       note={note}
                       key={note.noteId}
@@ -119,16 +102,29 @@ export default function NoteListContainer() {
                       loading={loading}
                       handleDelete={handleDelete}
                     />
-                  </div>
+                  );
+                })
+            : notes.map((note) => {
+                return (
+                  <NoteCard
+                    note={note}
+                    key={note.noteId}
+                    onClickNote={() => {
+                      setShowEditNote(true);
+                      setNoteToEdit(note);
+                    }}
+                    loading={loading}
+                    handleDelete={handleDelete}
+                  />
                 );
               })}
-        </>
+        </div>
       )}
 
       {notes ? (
         <>
           {notes.length === 0 ? (
-            <div className="flex grow justify-center">
+            <div className="flex grow justify-center mt-10">
               <p className="font-semibold text-lg">
                 You haven’t created any notes yet. Start by adding one!
               </p>
