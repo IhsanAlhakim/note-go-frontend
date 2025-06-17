@@ -4,24 +4,34 @@ import NoteListContainer from "../components/note_page/NoteListContainer";
 import NotePageHeader from "../components/note_page/NotePageHeader";
 import NotePageNav from "../components/note_page/NotePageNav";
 import PagesContainer from "../components/note_page/PagesContainer";
+import { useToast } from "../components/Toast";
 import { SearchNotesContext } from "../contexts/filter_notes_context";
 import { NotesContext } from "../contexts/notes_context";
+import { unknownError } from "../errors/unknown_error";
 import { getNotes } from "../network/note_api";
 import { Note } from "../types/notes";
 
 export default function NotesPage() {
   const [notes, setNotes] = useState<Note[] | null>(null);
   const [keyword, setKeyword] = useState<string>("");
+  const { showToast } = useToast();
   useEffect(() => {
-    async function loadNote() {
-      const notesData = await getNotes();
-      if (notesData === null) {
+    async function loadNotes() {
+      try {
+        const notesData = await getNotes();
+        if (notesData === null) {
+          setNotes([]);
+        } else {
+          setNotes(notesData);
+        }
+      } catch (error) {
+        showToast(unknownError.message[0]);
         setNotes([]);
-      } else {
-        setNotes(notesData);
+        console.error(error);
       }
     }
-    loadNote();
+    loadNotes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
