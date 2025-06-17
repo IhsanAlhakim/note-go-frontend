@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoteFormTextArea from "./NoteFormTextArea";
 import { updateNote } from "../../network/note_api";
 import AutoFocusTextArea from "./AutoFocusTextArea";
@@ -26,10 +26,15 @@ export default function EditNoteFormModal({
   onCloseEditForm,
   onSuccessEdit,
 }: EditNoteFormModalProps) {
-  console.log(noteToEdit);
   const [loading, setLoading] = useState(false);
+  const [noteBeforeEdited, setNoteBeforeEdited] = useState<Note | null>(null);
 
   const { showToast } = useToast();
+
+  useEffect(() => {
+    setNoteBeforeEdited({ ...noteToEdit });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const name = e.target.name;
@@ -42,6 +47,14 @@ export default function EditNoteFormModal({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (
+      noteToEdit.text === noteBeforeEdited?.text &&
+      noteToEdit.title === noteBeforeEdited?.title
+    ) {
+      onCloseEditForm();
+      return;
+    }
+
     setLoading(true);
     try {
       const updateNoteAPIResponse = await updateNote({
