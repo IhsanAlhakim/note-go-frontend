@@ -1,16 +1,16 @@
-import { Search } from "lucide-react";
 import { useState } from "react";
-import { useUser } from "../../contexts/user_context";
-import { deleteUser, logout } from "../../network/user_api";
 import { useNavigate } from "react-router";
+import { useUser } from "../../contexts/user_context";
 import {
   ClientError,
   isClientError,
   isServerError,
   ServerError,
 } from "../../errors/http_error";
-import { useToast } from "../Toast";
 import { unknownError } from "../../errors/unknown_error";
+import { deleteUser, logout } from "../../network/user_api";
+import { useToast } from "../Toast";
+import SearchNoteInput from "./SearchNoteInput";
 
 export default function NotePageHeader() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
@@ -72,14 +72,7 @@ export default function NotePageHeader() {
           <h1 className="font-semibold">NoteNest</h1>
         </div>
         <div className="flex items-center w-[700px]">
-          <div className="w-full h-[45px] border-2 p-1 rounded-lg flex items-center">
-            <Search className="mx-4" />
-            <input
-              type="text"
-              className="w-full h-full outline-none bg-transparent"
-              placeholder="Search"
-            />
-          </div>
+          <SearchNoteInput />
         </div>
         <div className="grow flex justify-end items-center pr-5 relative">
           <button
