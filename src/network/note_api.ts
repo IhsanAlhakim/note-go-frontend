@@ -1,4 +1,4 @@
-import { Notes } from "../types/notes";
+import { Note } from "../types/notes";
 
 interface createNoteData {
   title: string;
@@ -7,13 +7,13 @@ interface createNoteData {
 
 interface createNoteAPIResponseBody {
   message: string;
-  data: Notes;
+  data: Note;
 }
 
 export async function createNote(data: createNoteData): Promise<{
   status: number;
   message: string;
-  data: Notes;
+  data: Note;
 }> {
   const response = await fetch("http://localhost:9000/create/note", {
     method: "POST",
@@ -41,7 +41,7 @@ interface updateNoteData {
 export async function updateNote(data: updateNoteData): Promise<{
   status: number;
   message: string;
-  data: Notes;
+  data: Note;
 }> {
   const response = await fetch("http://localhost:9000/update/note", {
     method: "PATCH",
@@ -76,10 +76,10 @@ export async function deleteNote(noteId: string): Promise<{ status: number }> {
 
 interface getNotesAPIResponseBody {
   message: string;
-  data: Notes[];
+  data: Note[];
 }
 
-export async function getNotes(): Promise<Notes[]> {
+export async function getNotes(): Promise<Note[]> {
   const response = await fetch("http://localhost:9000/notes", {
     method: "GET",
     credentials: "include",

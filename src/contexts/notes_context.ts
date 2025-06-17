@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
-import { Notes } from "../types/notes";
+import { Note } from "../types/notes";
 
 interface NotesContext {
-  notes: Notes[] | null;
-  setNotes: (notes: Notes[]) => void;
+  notes: Note[] | null;
+  setNotes: (notes: Note[]) => void;
 }
 
 export const NotesContext = createContext<NotesContext | undefined>(undefined);

@@ -7,10 +7,10 @@ import PagesContainer from "../components/note_page/PagesContainer";
 import { SearchNotesContext } from "../contexts/filter_notes_context";
 import { NotesContext } from "../contexts/notes_context";
 import { getNotes } from "../network/note_api";
-import { Notes } from "../types/notes";
+import { Note } from "../types/notes";
 
 export default function NotesPage() {
-  const [notes, setNotes] = useState<Notes[] | null>(null);
+  const [notes, setNotes] = useState<Note[] | null>(null);
   const [keyword, setKeyword] = useState<string>("");
   useEffect(() => {
     async function loadNote() {

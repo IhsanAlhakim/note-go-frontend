@@ -9,7 +9,7 @@ import {
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
 import { deleteNote } from "../../network/note_api";
-import { Notes } from "../../types/notes";
+import { Note } from "../../types/notes";
 import { useToast } from "../Toast";
 import EditNoteFormModal from "./EditNoteForm";
 import NoteCard from "./NoteCard";
@@ -62,9 +62,9 @@ export default function NoteListContainer() {
     updatedAt: "",
   };
 
-  const [noteToEdit, setNoteToEdit] = useState<Notes>(noteToEditDefaultValue);
+  const [noteToEdit, setNoteToEdit] = useState<Note>(noteToEditDefaultValue);
 
-  const updateNoteList = (updatedNote: Notes) => {
+  const updateNoteList = (updatedNote: Note) => {
     if (notes !== null) {
       const idx = notes?.findIndex(
         (note) => note.noteId === updatedNote.noteId
