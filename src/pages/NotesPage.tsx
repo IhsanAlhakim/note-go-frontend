@@ -15,7 +15,11 @@ export default function NotesPage() {
   useEffect(() => {
     async function loadNote() {
       const notesData = await getNotes();
-      setNotes(notesData);
+      if (notesData === null) {
+        setNotes([]);
+      } else {
+        setNotes(notesData);
+      }
     }
     loadNote();
   }, []);

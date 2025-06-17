@@ -1,3 +1,4 @@
+import { LoaderCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { useSearchNotes } from "../../contexts/filter_notes_context";
 import { useNotes } from "../../contexts/notes_context";
@@ -80,43 +81,69 @@ export default function NoteListContainer() {
   };
   return (
     <>
-      <div className="grow flex flex-row flex-wrap gap-5 justify-center">
-        {keyword && keyword !== ""
-          ? notes
-              ?.filter(
-                (note) =>
-                  note.text.toLowerCase().includes(keyword.toLowerCase()) ||
-                  note.title.toLowerCase().includes(keyword.toLowerCase())
-              )
-              .map((note) => {
+      {notes && (
+        <>
+          {keyword && keyword !== ""
+            ? notes
+                .filter(
+                  (note) =>
+                    note.text.toLowerCase().includes(keyword.toLowerCase()) ||
+                    note.title.toLowerCase().includes(keyword.toLowerCase())
+                )
+                .map((note) => {
+                  return (
+                    <div className="grow flex flex-row flex-wrap gap-5 justify-center">
+                      <NoteCard
+                        note={note}
+                        key={note.noteId}
+                        onClickNote={() => {
+                          setShowEditNote(true);
+                          setNoteToEdit(note);
+                        }}
+                        loading={loading}
+                        handleDelete={handleDelete}
+                      />
+                    </div>
+                  );
+                })
+            : notes.map((note) => {
                 return (
-                  <NoteCard
-                    note={note}
-                    key={note.noteId}
-                    onClickNote={() => {
-                      setShowEditNote(true);
-                      setNoteToEdit(note);
-                    }}
-                    loading={loading}
-                    handleDelete={handleDelete}
-                  />
+                  <div className="grow flex flex-row flex-wrap gap-5 justify-center">
+                    <NoteCard
+                      note={note}
+                      key={note.noteId}
+                      onClickNote={() => {
+                        setShowEditNote(true);
+                        setNoteToEdit(note);
+                      }}
+                      loading={loading}
+                      handleDelete={handleDelete}
+                    />
+                  </div>
                 );
-              })
-          : notes?.map((note) => {
-              return (
-                <NoteCard
-                  note={note}
-                  key={note.noteId}
-                  onClickNote={() => {
-                    setShowEditNote(true);
-                    setNoteToEdit(note);
-                  }}
-                  loading={loading}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
-      </div>
+              })}
+        </>
+      )}
+
+      {notes ? (
+        <>
+          {notes.length === 0 ? (
+            <div className="flex grow justify-center">
+              <p className="font-semibold text-lg">
+                You haven’t created any notes yet. Start by adding one!
+              </p>
+            </div>
+          ) : (
+            ""
+          )}
+        </>
+      ) : (
+        <div className="flex grow justify-center mt-10 gap-2">
+          <LoaderCircleIcon className="animate-spin" />
+          <p className="font-semibold text-lg">Loading notes...</p>
+        </div>
+      )}
+
       {showEditNote && (
         <EditNoteFormModal
           noteToEdit={noteToEdit}
