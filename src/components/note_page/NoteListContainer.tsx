@@ -1,10 +1,6 @@
 import { useState } from "react";
+import { useSearchNotes } from "../../contexts/filter_notes_context";
 import { useNotes } from "../../contexts/notes_context";
-import { deleteNote } from "../../network/note_api";
-import { Notes } from "../../types/notes";
-import { useToast } from "../Toast";
-import EditNoteFormModal from "./EditNoteForm";
-import NoteCard from "./NoteCard";
 import {
   ClientError,
   isClientError,
@@ -12,7 +8,11 @@ import {
   ServerError,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
-import { useSearchNotes } from "../../contexts/filter_notes_context";
+import { deleteNote } from "../../network/note_api";
+import { Notes } from "../../types/notes";
+import { useToast } from "../Toast";
+import EditNoteFormModal from "./EditNoteForm";
+import NoteCard from "./NoteCard";
 
 export default function NoteListContainer() {
   const { notes, setNotes } = useNotes();
