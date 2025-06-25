@@ -120,7 +120,7 @@ export default function LoginPage() {
           type="text"
           value={userData.username}
           onChange={handleChange}
-          placeholder="Insert Your Account Username"
+          placeholder="Type your username"
           additionalStyles="mb-5"
         />
 
@@ -131,25 +131,22 @@ export default function LoginPage() {
           type="password"
           value={userData.password}
           onChange={handleChange}
-          placeholder="Insert Your Account Password"
+          placeholder="Type your password"
         />
         <div
-          className={`w-full mt-10 flex justify-center ${
+          className={`w-full mt-10 flex justify-center hover:bg-blue-900 ${
             loading ? "bg-blue-300" : "bg-blue-700"
-          } text-white p-3 rounded-3xl font-semibold`}
+          } text-white p-3 rounded-3xl font-semibold transition-all`}
         >
           <button type="submit" disabled={loading}>
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </div>
       </form>
       <div className="flex justify-center mt-10">
-        Need an account?
-        <a
-          href="/signup"
-          className="ml-1 text-blue-800 hover:text-black underline"
-        >
-          SIGNUP
+        Don't have an account?
+        <a href="/signup" className="ml-1 text-blue-800 hover:text-black">
+          Sign Up
         </a>
       </div>
     </>

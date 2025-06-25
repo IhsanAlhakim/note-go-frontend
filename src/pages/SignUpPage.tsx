@@ -24,9 +24,8 @@ export interface newUserDataBody {
 }
 
 export default function SignUpPage() {
-
-  const navigate = useNavigate()
-  const {showToast} = useToast()
+  const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const newUserDataStateDefaultValue = {
     email: "",
@@ -87,9 +86,8 @@ export default function SignUpPage() {
 
       setError(null);
       setNewUserData(newUserDataStateDefaultValue);
-      showToast("User Created")
-      navigate("/login")
-      
+      showToast("User Created");
+      navigate("/login");
     } catch (err) {
       if (
         err instanceof ValidationError ||
@@ -129,7 +127,7 @@ export default function SignUpPage() {
           type="email"
           value={newUserData.email}
           onChange={handleChange}
-          placeholder="Insert Your Account Email"
+          placeholder="Type your email"
           additionalStyles="mb-3"
         />
         <LoginSignUpInputBox
@@ -139,7 +137,7 @@ export default function SignUpPage() {
           type="text"
           value={newUserData.username}
           onChange={handleChange}
-          placeholder="Insert Your Account Username"
+          placeholder="Type your username"
           additionalStyles="mb-3"
         />
 
@@ -150,7 +148,7 @@ export default function SignUpPage() {
           type="password"
           value={newUserData.password}
           onChange={handleChange}
-          placeholder="Insert Your Account Password"
+          placeholder="Type your Password"
           additionalStyles="mb-3"
         />
 
@@ -167,20 +165,17 @@ export default function SignUpPage() {
         <div
           className={`w-full mt-10 flex justify-center ${
             loading ? "bg-blue-300" : "bg-blue-700"
-          } text-white p-3 rounded-3xl font-semibold`}
+          } text-white p-3 rounded-3xl font-semibold hover:bg-blue-900 transition-all`}
         >
           <button type="submit" disabled={loading}>
-            SignUp
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </div>
       </form>
       <div className="flex justify-center mt-10">
-        Already an User?
-        <a
-          href="/login"
-          className="ml-1 text-blue-800 hover:text-black underline"
-        >
-          LOGIN
+        Have an account?
+        <a href="/login" className="ml-1 text-blue-800 hover:text-black">
+          Login
         </a>
       </div>
     </>

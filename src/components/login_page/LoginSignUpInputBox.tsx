@@ -22,7 +22,9 @@ export default function LoginSignUpInputBox({
   return (
     <>
       <p>{title}</p>
-      <div className={`border-2 rounded-sm p-2 ${additionalStyles}`}>
+      <div
+        className={`border-0 rounded-sm p-2 bg-slate-300 ${additionalStyles}`}
+      >
         <input
           name={name}
           id={id}
@@ -31,7 +33,7 @@ export default function LoginSignUpInputBox({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full bg-transparent outline-none"
+          className="w-full bg-transparent outline-none placeholder-slate-700"
         />
       </div>
     </>
