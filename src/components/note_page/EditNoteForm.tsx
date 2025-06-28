@@ -86,7 +86,7 @@ export default function EditNoteFormModal({
 
   return (
     <>
-      <div className="absolute inset-0 flex justify-center items-center z-50">
+      <div className="absolute inset-0 bg-black/50 flex justify-center items-center z-50">
         <form onSubmit={handleSubmit}>
           <div className="w-[600px] max-w-[600px] min-h-[50px] pt-3 px-3 rounded-lg flex-col items-center bg-white">
             <AutoFocusTextArea
@@ -126,7 +126,7 @@ export default function EditNoteFormModal({
           </div>
         </form>
       </div>
-      <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+      {/* <div className="absolute inset-0 bg-black opacity-50 z-10"></div> */}
     </>
   );
 }
