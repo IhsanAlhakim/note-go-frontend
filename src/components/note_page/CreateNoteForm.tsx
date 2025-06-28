@@ -80,7 +80,7 @@ export default function CreateNoteForm() {
   };
 
   return (
-    <div className="w-[600px] max-w-[600px] min-h-[50px] border-2 px-3 rounded-lg flex-co items-center">
+    <div className="w-[600px] max-w-[600px] min-h-[50px] px-3 rounded-lg flex-co items-center bg-white">
       {showCreateNote ? (
         <form onSubmit={handleSubmit}>
           <NoteFormTextArea

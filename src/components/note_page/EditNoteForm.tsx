@@ -88,21 +88,23 @@ export default function EditNoteFormModal({
     <>
       <div className="absolute inset-0 flex justify-center items-center z-50">
         <form onSubmit={handleSubmit}>
-          <div className="w-[600px] max-w-[600px] min-h-[50px] border-2 pt-3 px-3 rounded-lg flex-col items-center bg-white">
+          <div className="w-[600px] max-w-[600px] min-h-[50px] pt-3 px-3 rounded-lg flex-col items-center bg-white">
             <AutoFocusTextArea
               id="title"
               name="title"
               value={noteToEdit.title}
               onChange={handleChange}
             />
-            <NoteFormTextArea
-              id="text"
-              name="text"
-              value={noteToEdit.text}
-              onChange={handleChange}
-              placeholder="Take a note"
-            />
-            <div className="flex font-semibold text-sm">
+            <div className="text-slate-500">
+              <NoteFormTextArea
+                id="text"
+                name="text"
+                value={noteToEdit.text}
+                onChange={handleChange}
+                placeholder="Take a note"
+              />
+            </div>
+            <div className="flex font-semibold text-sm text-slate-400">
               <p className="ml-auto">
                 Edited{" "}
                 {`${getTime(noteToEdit.updatedAt)}, ${getDate(

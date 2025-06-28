@@ -43,7 +43,7 @@ export default function NotesPage() {
             <NotePageHeader />
             <div className="flex grow">
               <NotePageNav />
-              <main className="grow flex flex-col max-h-[calc(100dvh-60px)] overflow-auto pb-8">
+              <main className="grow flex flex-col max-h-[calc(100dvh-60px)] overflow-auto pb-8 bg-slate-100">
                 <div className="mx-auto my-10">
                   <CreateNoteForm />
                 </div>
