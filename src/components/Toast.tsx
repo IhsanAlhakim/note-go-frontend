@@ -31,7 +31,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={{ showToast }}>
       {children}
       {message && (
-        <div className="fixed top-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in z-50">
+        <div className="fixed top-5 right-5 bg-blue-900 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in z-50">
           {message}
         </div>
       )}
