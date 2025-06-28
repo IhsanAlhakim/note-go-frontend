@@ -19,7 +19,7 @@ export default function NoteCard({
   return (
     <div
       onClick={onClickNote}
-      className="w-[300px] h-[200px] overflow-auto rounded-2xl py-3 px-5 flex flex-col font-semibold bg-white"
+      className="w-[300px] h-[200px] overflow-auto rounded-2xl py-3 px-5 flex flex-col font-semibold bg-white cursor-pointer hover:shadow-lg transition-shadow"
     >
       <div className="mb-4 text-xl">
         <h3>{note.title}</h3>
