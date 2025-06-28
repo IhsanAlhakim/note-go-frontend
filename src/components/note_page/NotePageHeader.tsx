@@ -83,8 +83,8 @@ export default function NotePageHeader() {
             {loggedInUser?.username}
           </div>
           <button
-            className={`p-2 hover:bg-blue-500 rounded-xl hover:text-white transition-all ${
-              showLogoutButton && "bg-blue-500 text-white"
+            className={`p-2 hover:bg-blue-600 rounded-xl hover:text-white transition-all ${
+              showLogoutButton && "bg-blue-600 text-white"
             }`}
             onClick={() => setShowLogoutButton(!showLogoutButton)}
           >
@@ -92,7 +92,7 @@ export default function NotePageHeader() {
           </button>
           {showLogoutButton && (
             <div
-              className={`absolute transition-all grid grid-row-2 bg-blue-500 -bottom-20 w-[150px] h-[80px] text-white rounded-lg`}
+              className={`absolute transition-all grid grid-row-2 bg-blue-600 -bottom-20 w-[150px] h-[80px] text-white rounded-lg`}
             >
               <div
                 className={`border-b-2 rounded-t-lg flex justify-center items-center ${
