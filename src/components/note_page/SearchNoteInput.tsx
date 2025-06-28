@@ -9,7 +9,7 @@ export default function SearchNoteInput() {
     setKeyword(value);
   };
   return (
-    <div className="w-full h-[45px] border-2 p-1 rounded-lg flex items-center">
+    <div className="w-full h-[45px] p-1 rounded-lg flex items-center bg-slate-300">
       <Search className="mx-4" />
       <input
         id="filter"
@@ -17,7 +17,7 @@ export default function SearchNoteInput() {
         type="text"
         value={keyword}
         onChange={handleChange}
-        className="w-full h-full outline-none bg-transparent"
+        className="w-full h-full outline-none bg-transparent placeholder-slate-700"
         placeholder="Search"
         autoComplete="off"
       />

@@ -1,3 +1,4 @@
+import { CircleUser, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useUser } from "../../contexts/user_context";
@@ -9,9 +10,9 @@ import {
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
 import { deleteUser, logout } from "../../network/user_api";
+import { useConfirm } from "../ConfirmModal";
 import { useToast } from "../Toast";
 import SearchNoteInput from "./SearchNoteInput";
-import { useConfirm } from "../ConfirmModal";
 
 export default function NotePageHeader() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
@@ -68,29 +69,35 @@ export default function NotePageHeader() {
   };
 
   return (
-    <header className="h-[60px] flex justify-center border-b-2">
-      <div className="flex h-full w-[90%]">
-        <div className="flex items-center w-[200px] pl-5 text-2xl">
+    <header className="h-[60px] flex justify-center">
+      <div className="flex h-full w-full">
+        <div className="flex items-center w-[275px] text-2xl justify-center bg-blue-900 text-white">
           <h1 className="font-semibold">NoteNest</h1>
         </div>
-        <div className="flex items-center w-[700px]">
+        <div className="flex items-center w-[700px] ml-10">
           <SearchNoteInput />
         </div>
-        <div className="grow flex justify-end items-center pr-5 relative">
-          <button
-            onClick={() => setShowLogoutButton(!showLogoutButton)}
-            className="bg-blue-500 h-[45px] px-4 rounded-lg font-semibold text-white"
-          >
+        <div className="grow flex justify-end items-center pr-10 relative gap-5">
+          <div className="flex flex-row justify-center items-center gap-2 font-semibold text-md">
+            <CircleUser />
             {loggedInUser?.username}
+          </div>
+          <button
+            className={`p-2 hover:bg-blue-500 rounded-xl hover:text-white transition-all ${
+              showLogoutButton && "bg-blue-500 text-white"
+            }`}
+            onClick={() => setShowLogoutButton(!showLogoutButton)}
+          >
+            {showLogoutButton ? <X /> : <Menu />}
           </button>
           {showLogoutButton && (
             <div
               className={`absolute transition-all grid grid-row-2 bg-blue-500 -bottom-20 w-[150px] h-[80px] text-white rounded-lg`}
             >
               <div
-                className={`border-b-2 flex justify-center items-center ${
-                  loading && "bg-blue-300"
-                } hover:bg-blue-300`}
+                className={`border-b-2 rounded-t-lg flex justify-center items-center ${
+                  loading && "bg-blue-400"
+                } hover:bg-blue-900 transition-all`}
               >
                 <button
                   disabled={loading}
@@ -102,9 +109,9 @@ export default function NotePageHeader() {
                 </button>
               </div>
               <div
-                className={`flex justify-center items-center ${
-                  loading && "bg-blue-300"
-                } hover:bg-blue-300`}
+                className={`rounded-b-lg flex justify-center items-center ${
+                  loading && "bg-blue-400"
+                } hover:bg-blue-900 transition-all`}
               >
                 <button
                   disabled={loading}
