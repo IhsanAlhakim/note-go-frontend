@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface NoteFormTextAreaProps {
   id: string;
@@ -21,6 +21,15 @@ export default function NoteFormTextArea({
     ref.current.style.height = "auto";
     ref.current.style.height = ref.current.scrollHeight + "px";
   };
+
+  useEffect(() => {
+    const textArea = textAreaRef.current;
+    if (textArea) {
+      // textArea.style.height = "auto"; // reset dulu
+      textArea.style.height = textArea.scrollHeight + "px"; // sesuaikan dengan isi
+    }
+  }, []);
+
   return (
     <textarea
       id={id}
