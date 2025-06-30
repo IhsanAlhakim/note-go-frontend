@@ -9,9 +9,11 @@ import {
   isClientError,
   isServerError,
   ServerError,
+  UnauthorizedErrorStatusCode,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
 import { getDate, getTime } from "../../utils/get_date_time";
+import { useNavigate } from "react-router";
 
 interface EditNoteFormModalProps {
   noteToEdit: Note;
@@ -30,6 +32,7 @@ export default function EditNoteFormModal({
   const [noteBeforeEdited, setNoteBeforeEdited] = useState<Note | null>(null);
 
   const { showToast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNoteBeforeEdited({ ...noteToEdit });
@@ -62,6 +65,12 @@ export default function EditNoteFormModal({
         title: noteToEdit.title,
         text: noteToEdit.text,
       });
+
+      if (updateNoteAPIResponse.status === UnauthorizedErrorStatusCode) {
+        showToast("Session Expired");
+        navigate("/login");
+        return;
+      }
 
       if (isClientError(updateNoteAPIResponse.status)) {
         throw new ClientError();
