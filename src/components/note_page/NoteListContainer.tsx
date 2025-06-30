@@ -7,6 +7,7 @@ import {
   isClientError,
   isServerError,
   ServerError,
+  UnauthorizedErrorStatusCode,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
 import { deleteNote } from "../../network/note_api";
@@ -14,10 +15,12 @@ import { Note } from "../../types/notes";
 import { useToast } from "../Toast";
 import EditNoteFormModal from "./EditNoteForm";
 import NoteCard from "./NoteCard";
+import { useNavigate } from "react-router";
 
 export default function NoteListContainer() {
   const { notes, setNotes } = useNotes();
   const { keyword } = useSearchNotes();
+  const navigate = useNavigate();
 
   const [showEditNote, setShowEditNote] = useState(false);
 
@@ -29,6 +32,13 @@ export default function NoteListContainer() {
     setLoading(true);
     try {
       const deleteNoteAPIResponse = await deleteNote(noteId);
+
+      if (deleteNoteAPIResponse.status === UnauthorizedErrorStatusCode) {
+        showToast("Session Expired");
+        navigate("/login");
+        return;
+      }
+
       if (isClientError(deleteNoteAPIResponse.status)) {
         throw new ClientError();
       }
