@@ -35,7 +35,9 @@ export default function NoteCard({
           <button
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
-              showConfirm("Yakin Hapus?", () => handleDelete(note.noteId));
+              showConfirm("Are you sure want to delete this note?", () =>
+                handleDelete(note.noteId)
+              );
             }}
             disabled={loading}
             className={`ml-auto ${

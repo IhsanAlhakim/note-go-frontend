@@ -55,10 +55,7 @@ export default function ConfirmModalProvider({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
             <h2 className="text-xl font-semibold mb-4">Confirm Action</h2>
-            <p className="mb-6">
-              Apakah kamu yakin ingin menghapus catatan ini? Tindakan ini tidak
-              dapat dibatalkan.
-            </p>
+            <p className="mb-6">{options.message}</p>
 
             <div className="flex justify-end gap-3">
               <button

@@ -102,7 +102,10 @@ export default function NotePageHeader() {
                 <button
                   disabled={loading}
                   onClick={() =>
-                    showConfirm("Yakin Hapus User", () => handleDeleteUser())
+                    showConfirm(
+                      "Are you sure you want to delete your account?",
+                      () => handleDeleteUser()
+                    )
                   }
                 >
                   Delete Account
@@ -116,7 +119,9 @@ export default function NotePageHeader() {
                 <button
                   disabled={loading}
                   onClick={() =>
-                    showConfirm("Yakin Logout", () => handleLogout())
+                    showConfirm("Are you sure want to Logout?", () =>
+                      handleLogout()
+                    )
                   }
                 >
                   Logout
