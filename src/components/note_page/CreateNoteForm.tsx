@@ -5,12 +5,14 @@ import {
   isClientError,
   isServerError,
   ServerError,
+  UnauthorizedErrorStatusCode,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
 import { createNote } from "../../network/note_api";
 import { useToast } from "../Toast";
 import NoteFormTextArea from "./NoteFormTextArea";
 import NoteFormTextInput from "./NoteFormTextInput";
+import { useNavigate } from "react-router";
 
 interface newNoteDataBody {
   title: string;
@@ -19,6 +21,8 @@ interface newNoteDataBody {
 
 export default function CreateNoteForm() {
   const { notes, setNotes } = useNotes();
+
+  const navigate = useNavigate();
 
   const newNoteDataDefaultValue = {
     title: "",
@@ -51,6 +55,12 @@ export default function CreateNoteForm() {
         title: newNoteData.title,
         text: newNoteData.text,
       });
+
+      if (createNoteAPIResponse.status === UnauthorizedErrorStatusCode) {
+        showToast("Session Expired");
+        navigate("/login");
+        return;
+      }
 
       if (isClientError(createNoteAPIResponse.status)) {
         throw new ClientError();
