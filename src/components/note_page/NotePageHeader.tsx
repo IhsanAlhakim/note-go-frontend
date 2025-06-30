@@ -7,6 +7,7 @@ import {
   isClientError,
   isServerError,
   ServerError,
+  UnauthorizedErrorStatusCode,
 } from "../../errors/http_error";
 import { unknownError } from "../../errors/unknown_error";
 import { deleteUser, logout } from "../../network/user_api";
@@ -49,6 +50,13 @@ export default function NotePageHeader() {
     setLoading(true);
     try {
       const deleteUserAPIResponse = await deleteUser();
+
+      if (deleteUserAPIResponse.status === UnauthorizedErrorStatusCode) {
+        showToast("Session Expired");
+        navigate("/login");
+        return;
+      }
+
       if (isClientError(deleteUserAPIResponse.status)) {
         throw new ClientError();
       }
