@@ -42,7 +42,7 @@ export default function NoteCard({
             disabled={loading}
             className={`ml-auto ${
               loading ? "bg-blue-400" : "bg-blue-600"
-            } w-[80px] h-[30px] rounded-lg font-semibold text-white`}
+            } w-[80px] h-[30px] rounded-lg font-semibold text-white cursor-pointer hover:bg-blue-900 transition-colors`}
           >
             Delete
           </button>

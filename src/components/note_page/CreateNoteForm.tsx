@@ -112,8 +112,8 @@ export default function CreateNoteForm() {
               disabled={loading}
               type="submit"
               className={`ml-auto  ${
-                loading ? "bg-blue-300" : "bg-blue-500"
-              } hover:bg-blue-900 w-[80px] h-[30px] rounded-lg font-semibold text-white cursor-pointer`}
+                loading ? "bg-blue-400" : "bg-blue-600"
+              } hover:bg-blue-900 w-[80px] h-[30px] rounded-lg font-semibold text-white cursor-pointer transition-colors`}
             >
               Close
             </button>
