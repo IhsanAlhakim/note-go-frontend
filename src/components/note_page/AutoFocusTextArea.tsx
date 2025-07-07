@@ -27,7 +27,6 @@ export default function AutoFocusTextArea({
       const length = textArea.value.length;
       textArea.setSelectionRange(length, length);
 
-      // textArea.style.height = "auto"; // reset dulu
       textArea.style.height = textArea.scrollHeight + "px"; // sesuaikan dengan isi
     }
   }, []);

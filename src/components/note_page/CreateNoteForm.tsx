@@ -20,21 +20,19 @@ interface newNoteDataBody {
 }
 
 export default function CreateNoteForm() {
-  const { notes, setNotes } = useNotes();
-
-  const navigate = useNavigate();
-
   const newNoteDataDefaultValue = {
     title: "",
     text: "",
   };
+
   const [newNoteData, setNewNoteData] = useState<newNoteDataBody>(
     newNoteDataDefaultValue
   );
-
   const [loading, setLoading] = useState(false);
   const [showCreateNote, setShowCreateNote] = useState(false);
 
+  const { notes, setNotes } = useNotes();
+  const navigate = useNavigate();
   const { showToast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

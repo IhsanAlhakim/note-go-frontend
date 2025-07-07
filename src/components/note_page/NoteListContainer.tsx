@@ -18,15 +18,23 @@ import NoteCard from "./NoteCard";
 import { useNavigate } from "react-router";
 
 export default function NoteListContainer() {
+  const noteToEditDefaultValue = {
+    noteId: "",
+    userId: "",
+    title: "",
+    text: "",
+    createdAt: "",
+    updatedAt: "",
+  };
+
+  const [noteToEdit, setNoteToEdit] = useState<Note>(noteToEditDefaultValue);
+  const [showEditNote, setShowEditNote] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const { notes, setNotes } = useNotes();
   const { keyword } = useSearchNotes();
-  const navigate = useNavigate();
-
-  const [showEditNote, setShowEditNote] = useState(false);
-
   const { showToast } = useToast();
-
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleDelete = async (noteId: string) => {
     setLoading(true);
@@ -63,17 +71,6 @@ export default function NoteListContainer() {
       setLoading(false);
     }
   };
-
-  const noteToEditDefaultValue = {
-    noteId: "",
-    userId: "",
-    title: "",
-    text: "",
-    createdAt: "",
-    updatedAt: "",
-  };
-
-  const [noteToEdit, setNoteToEdit] = useState<Note>(noteToEditDefaultValue);
 
   const updateNoteList = (updatedNote: Note) => {
     if (notes !== null) {

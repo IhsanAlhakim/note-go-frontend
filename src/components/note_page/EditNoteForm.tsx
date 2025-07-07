@@ -80,7 +80,11 @@ export default function EditNoteFormModal({
         throw new ServerError();
       }
 
-      onSuccessEdit(noteToEdit);
+      const updatedAt = new Date();
+      onSuccessEdit({
+        ...noteToEdit,
+        updatedAt: updatedAt.toString(),
+      });
     } catch (err) {
       if (err instanceof ServerError || err instanceof ClientError) {
         showToast(err.desc[0]);

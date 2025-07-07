@@ -16,6 +16,7 @@ export default function NoteFormTextArea({
   placeholder,
 }: NoteFormTextAreaProps) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
   const autoResize = (ref: React.RefObject<HTMLTextAreaElement | null>) => {
     if (!ref.current) return;
     ref.current.style.height = "auto";
@@ -25,7 +26,6 @@ export default function NoteFormTextArea({
   useEffect(() => {
     const textArea = textAreaRef.current;
     if (textArea) {
-      // textArea.style.height = "auto"; // reset dulu
       textArea.style.height = textArea.scrollHeight + "px"; // sesuaikan dengan isi
     }
   }, []);

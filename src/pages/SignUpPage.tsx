@@ -24,9 +24,6 @@ export interface newUserDataBody {
 }
 
 export default function SignUpPage() {
-  const navigate = useNavigate();
-  const { showToast } = useToast();
-
   const newUserDataStateDefaultValue = {
     email: "",
     username: "",
@@ -37,9 +34,11 @@ export default function SignUpPage() {
   const [newUserData, setNewUserData] = useState<newUserDataBody>(
     newUserDataStateDefaultValue
   );
-
   const [error, setError] = useState<formError | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;

@@ -28,7 +28,6 @@ export default function LoginPage() {
   };
 
   const [userData, setUserData] = useState<userDataBody>(userDataDefaultValue);
-
   const [error, setError] = useState<formError | null>(null);
   const [loading, setLoading] = useState(false);
 

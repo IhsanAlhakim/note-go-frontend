@@ -16,6 +16,7 @@ export default function NoteCard({
   handleDelete,
 }: NoteCardProps) {
   const { showConfirm } = useConfirm();
+
   return (
     <div
       onClick={onClickNote}
