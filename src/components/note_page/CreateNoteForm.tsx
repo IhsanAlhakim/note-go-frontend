@@ -90,7 +90,7 @@ export default function CreateNoteForm() {
   };
 
   return (
-    <div className="w-[600px] max-w-[600px] min-h-[50px] px-3 rounded-lg flex-co items-center bg-white">
+    <div className="w-[300px] md:w-[600px] max-w-[300px] md:max-w-[600px] min-h-[50px] px-3 rounded-lg bg-white">
       {showCreateNote ? (
         <form onSubmit={handleSubmit}>
           <NoteFormTextArea
@@ -113,7 +113,7 @@ export default function CreateNoteForm() {
               type="submit"
               className={`ml-auto  ${
                 loading ? "bg-blue-300" : "bg-blue-500"
-              } hover:bg-blue-500 w-[80px] h-[30px] rounded-lg font-semibold text-white`}
+              } hover:bg-blue-900 w-[80px] h-[30px] rounded-lg font-semibold text-white cursor-pointer`}
             >
               Close
             </button>

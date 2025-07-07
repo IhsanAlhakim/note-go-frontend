@@ -1,94 +1,64 @@
 import { CircleUser, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useShowNav } from "../../contexts/show_nav_context";
 import { useUser } from "../../contexts/user_context";
-import {
-  ClientError,
-  isClientError,
-  isServerError,
-  ServerError,
-  UnauthorizedErrorStatusCode,
-} from "../../errors/http_error";
-import { unknownError } from "../../errors/unknown_error";
-import { deleteUser, logout } from "../../network/user_api";
-import { useConfirm } from "../ConfirmModal";
-import { useToast } from "../Toast";
+import DeleteUserButton from "./DeleteUserButton";
+import LogoutButton from "./LogoutButton";
 import SearchNoteInput from "./SearchNoteInput";
 
 export default function NotePageHeader() {
   const [showLogoutButton, setShowLogoutButton] = useState(false);
-  const { showConfirm } = useConfirm();
-  const [loading, setLoading] = useState(false);
+
   const { loggedInUser } = useUser();
-  const navigate = useNavigate();
-  const { showToast } = useToast();
-
-  const handleLogout = async () => {
-    setLoading(true);
-    try {
-      const logoutAPIResponse = await logout();
-      if (isClientError(logoutAPIResponse.status)) {
-        throw new ClientError();
-      }
-
-      if (isServerError(logoutAPIResponse.status)) {
-        throw new ServerError();
-      }
-      navigate("/login");
-    } catch (err) {
-      if (err instanceof ServerError || err instanceof ClientError) {
-        showToast(err.desc[0]);
-        return;
-      }
-      showToast(unknownError.message[0]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteUser = async () => {
-    setLoading(true);
-    try {
-      const deleteUserAPIResponse = await deleteUser();
-
-      if (deleteUserAPIResponse.status === UnauthorizedErrorStatusCode) {
-        showToast("Session Expired");
-        navigate("/login");
-        return;
-      }
-
-      if (isClientError(deleteUserAPIResponse.status)) {
-        throw new ClientError();
-      }
-
-      if (isServerError(deleteUserAPIResponse.status)) {
-        throw new ServerError();
-      }
-      navigate("/login");
-    } catch (err) {
-      if (err instanceof ServerError || err instanceof ClientError) {
-        showToast(err.desc[0]);
-        return;
-      }
-      showToast(unknownError.message[0]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { setShowNav } = useShowNav();
 
   return (
     <header className="h-[60px] flex justify-center">
       <div className="flex h-full w-full">
-        <div className="flex items-center w-[275px] text-2xl justify-center bg-blue-900 text-white">
+        <div className="hidden lg:flex items-center w-[275px] text-2xl justify-center bg-blue-900 text-white">
           <h1 className="font-semibold">NoteNest</h1>
         </div>
-        <div className="flex items-center w-[700px] ml-10">
+        <div className="flex lg:hidden grow justify-center items-center">
+          <button
+            className="p-2 hover:bg-blue-600 rounded-xl hover:text-white transition-all"
+            onClick={() => setShowNav(true)}
+          >
+            <Menu />
+          </button>
+        </div>
+        <div className="flex items-center w-[250px] md:w-[600px] lg:w-[700px] lg:ml-10">
           <SearchNoteInput />
         </div>
-        <div className="grow flex justify-end items-center pr-10 relative gap-5">
+        <div className="flex relative lg:hidden grow justify-center items-center">
+          <button
+            className={`p-2 hover:bg-blue-600 rounded-xl hover:text-white transition-all ${
+              showLogoutButton && "bg-blue-600 text-white"
+            }`}
+            onClick={() => setShowLogoutButton(!showLogoutButton)}
+          >
+            {showLogoutButton ? <X /> : <CircleUser />}
+          </button>
+          {showLogoutButton && (
+            <div
+              className={`fixed grid grid-rows-[auto_40px_40px] bg-blue-600 top-15 right-4 w-[150px] text-white rounded-lg overflow-hidden`}
+            >
+              <div className="border-b-2 bg-blue-900 flex justify-center items-center font-bold gap-2 max-w-[150px] flex-col p-4">
+                <CircleUser size={30} />
+                <p className="text-center line-clamp-2">
+                  {loggedInUser?.username}
+                </p>
+              </div>
+              <DeleteUserButton />
+              <LogoutButton />
+            </div>
+          )}
+        </div>
+        <div className="hidden grow lg:flex justify-end items-center pr-10 relative gap-5">
           <div className="flex flex-row justify-center items-center gap-2 font-semibold text-md">
             <CircleUser />
-            {loggedInUser?.username}
+            <p className="max-w-[120px] line-clamp-1">
+              {loggedInUser?.username}
+            </p>
           </div>
           <button
             className={`p-2 hover:bg-blue-600 rounded-xl hover:text-white transition-all ${
@@ -100,41 +70,10 @@ export default function NotePageHeader() {
           </button>
           {showLogoutButton && (
             <div
-              className={`absolute transition-all grid grid-row-2 bg-blue-600 -bottom-20 w-[150px] h-[80px] text-white rounded-lg`}
+              className={`absolute grid grid-row-2 bg-blue-600 -bottom-20 w-[150px] h-[80px] text-white rounded-lg overflow-hidden`}
             >
-              <div
-                className={`border-b-2 rounded-t-lg flex justify-center items-center ${
-                  loading && "bg-blue-400"
-                } hover:bg-blue-900 transition-all`}
-              >
-                <button
-                  disabled={loading}
-                  onClick={() =>
-                    showConfirm(
-                      "Are you sure you want to delete your account?",
-                      () => handleDeleteUser()
-                    )
-                  }
-                >
-                  Delete Account
-                </button>
-              </div>
-              <div
-                className={`rounded-b-lg flex justify-center items-center ${
-                  loading && "bg-blue-400"
-                } hover:bg-blue-900 transition-all`}
-              >
-                <button
-                  disabled={loading}
-                  onClick={() =>
-                    showConfirm("Are you sure want to Logout?", () =>
-                      handleLogout()
-                    )
-                  }
-                >
-                  Logout
-                </button>
-              </div>
+              <DeleteUserButton />
+              <LogoutButton />
             </div>
           )}
         </div>

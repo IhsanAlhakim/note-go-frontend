@@ -96,8 +96,11 @@ export default function EditNoteFormModal({
   return (
     <>
       <div className="absolute inset-0 bg-black/50 flex justify-center items-center z-50">
-        <form onSubmit={handleSubmit}>
-          <div className="w-[600px] max-w-[600px] min-h-[50px] pt-3 px-3 rounded-lg flex-col items-center bg-white">
+        <form
+          onSubmit={handleSubmit}
+          className="w-[300px] md:w-[600px] max-w-[300px] md:max-w-[600px] min-h-[50px] pt-3 px-3 rounded-lg flex-col items-center bg-white"
+        >
+          <div className="max-h-[400px] overflow-y-auto mb-3">
             <AutoFocusTextArea
               id="title"
               name="title"
@@ -113,29 +116,28 @@ export default function EditNoteFormModal({
                 placeholder="Take a note"
               />
             </div>
-            <div className="flex font-semibold text-sm text-slate-400">
-              <p className="ml-auto">
-                Edited{" "}
-                {`${getTime(noteToEdit.updatedAt)}, ${getDate(
-                  noteToEdit.updatedAt
-                )}`}
-              </p>
-            </div>
-            <div className="w-full h-[50px] flex px-1 items-center">
-              <button
-                disabled={loading}
-                type="submit"
-                className={`ml-auto ${
-                  loading ? "bg-blue-300" : "bg-blue-500"
-                } w-[80px] h-[30px] rounded-lg font-semibold text-white`}
-              >
-                Close
-              </button>
-            </div>
+          </div>
+          <div className="flex font-semibold text-sm text-slate-400">
+            <p className="ml-auto">
+              Edited{" "}
+              {`${getTime(noteToEdit.updatedAt)}, ${getDate(
+                noteToEdit.updatedAt
+              )}`}
+            </p>
+          </div>
+          <div className="w-full h-[50px] flex px-1 items-center">
+            <button
+              disabled={loading}
+              type="submit"
+              className={`ml-auto ${
+                loading ? "bg-blue-300" : "bg-blue-500"
+              } w-[80px] h-[30px] rounded-lg font-semibold text-white`}
+            >
+              Close
+            </button>
           </div>
         </form>
       </div>
-      {/* <div className="absolute inset-0 bg-black opacity-50 z-10"></div> */}
     </>
   );
 }

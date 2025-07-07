@@ -9,10 +9,9 @@ import { unknownError } from "../errors/unknown_error";
 import { LoaderCircleIcon } from "lucide-react";
 
 export default function NotesPageLayout() {
-  const navigate = useNavigate();
-
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
+  const navigate = useNavigate();
   const { showToast } = useToast();
 
   useEffect(() => {

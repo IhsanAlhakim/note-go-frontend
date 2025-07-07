@@ -91,7 +91,7 @@ export default function NoteListContainer() {
   return (
     <>
       {notes && notes.length > 0 && (
-        <div className="grow flex flex-row flex-wrap gap-5 justify-center">
+        <div className="mx-auto gap-5 grow grid grid-cols-[300px] md:grid-cols-[300px_300px] lg:grid-cols-[300px_300px_300px] grid-rows-[225px]">
           {keyword && keyword !== ""
             ? notes
                 .filter(

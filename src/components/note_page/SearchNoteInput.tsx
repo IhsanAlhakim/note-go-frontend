@@ -9,7 +9,7 @@ export default function SearchNoteInput() {
     setKeyword(value);
   };
   return (
-    <div className="w-full h-[45px] p-1 rounded-lg flex items-center">
+    <div className="w-full h-[45px] md:p-1 rounded-lg flex items-center">
       <Search className="mx-4" />
       <input
         id="filter"
