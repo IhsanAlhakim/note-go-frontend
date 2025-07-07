@@ -1,5 +1,7 @@
 import { responseStatusOK } from "../errors/http_error";
 
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface signUpData {
   email: string;
   username: string;
@@ -14,7 +16,7 @@ export async function signUp(data: signUpData): Promise<{
   status: number;
   message: string;
 }> {
-  const response = await fetch("http://localhost:9000/create/user", {
+  const response = await fetch(`${VITE_API_BASE_URL}/create/user`, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -49,7 +51,7 @@ export async function login(data: loginData): Promise<{
   message: string;
   data: loginAPIResponseData;
 }> {
-  const response = await fetch("http://localhost:9000/login", {
+  const response = await fetch(`${VITE_API_BASE_URL}/login`, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -67,7 +69,7 @@ export async function login(data: loginData): Promise<{
 }
 
 export async function logout(): Promise<{ status: number }> {
-  const response = await fetch("http://localhost:9000/logout", {
+  const response = await fetch(`${VITE_API_BASE_URL}/logout`, {
     method: "POST",
     credentials: "include", //Wajib untuk terima/kirim cookie
   });
@@ -77,7 +79,7 @@ export async function logout(): Promise<{ status: number }> {
 }
 
 export async function deleteUser(): Promise<{ status: number }> {
-  const response = await fetch("http://localhost:9000/delete/user", {
+  const response = await fetch(`${VITE_API_BASE_URL}/delete/user`, {
     method: "DELETE",
     credentials: "include", //Wajib untuk terima/kirim cookie
   });
@@ -93,7 +95,7 @@ export async function getUser(): Promise<{
   data: getUserAPIResponseData | null;
   status: number;
 }> {
-  const response = await fetch("http://localhost:9000/user", {
+  const response = await fetch(`${VITE_API_BASE_URL}/user`, {
     method: "GET",
     credentials: "include",
   });

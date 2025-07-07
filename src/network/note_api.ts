@@ -1,5 +1,7 @@
 import { Note } from "../types/notes";
 
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface createNoteData {
   title: string;
   text: string;
@@ -15,7 +17,7 @@ export async function createNote(data: createNoteData): Promise<{
   message: string;
   data: Note;
 }> {
-  const response = await fetch("http://localhost:9000/create/note", {
+  const response = await fetch(`${VITE_API_BASE_URL}/create/note`, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -43,7 +45,7 @@ export async function updateNote(data: updateNoteData): Promise<{
   message: string;
   data: Note;
 }> {
-  const response = await fetch("http://localhost:9000/update/note", {
+  const response = await fetch(`${VITE_API_BASE_URL}/update/note`, {
     method: "PATCH",
     body: JSON.stringify(data),
     headers: {
@@ -62,7 +64,7 @@ export async function updateNote(data: updateNoteData): Promise<{
 
 export async function deleteNote(noteId: string): Promise<{ status: number }> {
   const response = await fetch(
-    `http://localhost:9000/delete/note?noteId=${noteId}`,
+    `${VITE_API_BASE_URL}/delete/note?noteId=${noteId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -80,7 +82,7 @@ interface getNotesAPIResponseBody {
 }
 
 export async function getNotes(): Promise<Note[]> {
-  const response = await fetch("http://localhost:9000/notes", {
+  const response = await fetch(`${VITE_API_BASE_URL}/notes`, {
     method: "GET",
     credentials: "include",
   });
